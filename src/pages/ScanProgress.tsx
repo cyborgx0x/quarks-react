@@ -4,7 +4,7 @@ import { Field, ProgressBar } from "@fluentui/react-components";
 const intervalDelay = 100;
 const intervalIncrement = 1;
 
-export const ScanProgressView = () => {
+const ScanProgressView = () => {
   const [value, setValue] = React.useState(0);
 
   React.useEffect(() => {
@@ -24,3 +24,4 @@ export const ScanProgressView = () => {
     </Field>
   );
 };
+export default ScanProgressView

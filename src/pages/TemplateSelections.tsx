@@ -215,4 +215,6 @@ export const TemplateSelectionView = () => {
       </TableBody>
     </Table>
   );
-};
+}
+
+export default TemplateSelectionView

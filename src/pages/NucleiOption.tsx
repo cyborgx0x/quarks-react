@@ -15,7 +15,7 @@ import { Link24Regular, Add24Regular } from "@fluentui/react-icons";
 import { Switch } from "@fluentui/react-components";
 import type { SwitchProps } from "@fluentui/react-components";
 import { TemplateSelectionView } from "./TemplateSelections";
-import { ScanProgressView } from "./ScanProgress";
+import  ScanProgressView  from "./ScanProgress";
 const useStyles = makeStyles({
   root: {
     display: "flex",
@@ -32,7 +32,7 @@ const useStyles = makeStyles({
   },
 });
 
-export const NucleiOptionView = () => {
+export default function NucleiOptionView() {
   const styles = useStyles();
   const maxRedirect = useId("max-redirect");
   const customHeader = useId("custom-header");
@@ -91,4 +91,4 @@ export const NucleiOptionView = () => {
       <Divider />
     </div>
   );
-};
+}
