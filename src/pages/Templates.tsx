@@ -77,7 +77,7 @@ export const CompositeNavigation = () => {
     const config: AxiosConfig = {
         method: "get",
         maxBodyLength: Infinity,
-        url: "http://localhost:8000/api/user/templates/",
+        url: "/api/user/templates/",
 
         headers: {
             Authorization: `Bearer ${token}`,

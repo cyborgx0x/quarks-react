@@ -55,7 +55,7 @@ export const LoginView = () => {
         const config: AxiosRequestConfig = {
             method: 'post',
             maxBodyLength: Infinity,
-            url: 'http://localhost:8000/api/token/',
+            url: '/api/token/',
             headers: {
                 'Content-Type': 'application/json',
             },
