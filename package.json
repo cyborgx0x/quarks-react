@@ -13,10 +13,11 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@fluentui/react": "^8.110.13",
-    "@fluentui/react-components": "^9.28.1",
+    "@fluentui/react-components": "^9.32.3",
     "@microsoft/fast-react-wrapper": "^0.3.19",
     "@mui/icons-material": "^5.14.11",
     "@mui/material": "^5.14.11",
+    "axios": "^1.5.1",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",
     "react": "^18.2.0",
@@ -33,6 +34,7 @@
     "eslint": "^8.45.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
+    "prettier": "^3.0.3",
     "typescript": "^5.0.2",
     "vite": "^4.4.5"
   }
