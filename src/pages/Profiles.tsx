@@ -1,6 +1,6 @@
 import {
   // Input,
-  Title3,
+  Body1Strong,
   LargeTitle,
   createTableColumn,
   DataGrid,
@@ -11,25 +11,44 @@ import {
   DataGridCell,
   Button,
 } from "@fluentui/react-components";
-// import { Link24Regular, Add24Regular } from "@fluentui/react-icons";
 
+import {
+  DeleteRegular,
+  EditRegular,
+  OpenRegular,
+  ShareRegular,
+  FormNewRegular,
+  CloudArrowUpRegular,
+  SaveRegular,
+} from "@fluentui/react-icons";
+import DialogComponent from "../components/DialogRegular";
 
-import type {  TableColumnDefinition } from "@fluentui/react-components";
+import type { TableColumnDefinition } from "@fluentui/react-components";
 
 import { APIResponse, AxiosConfig, ScanProfile } from "../type";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { DeleteRegular, EditRegular, OpenRegular } from "@fluentui/react-icons";
-
+import ProfileCreate from "./profile/ProfileCreate";
+import ProfileDetail from "./profile/ProfileDetail";
+import ProfileEdit from "./profile/ProfileEdit";
 
 const columns: TableColumnDefinition<ScanProfile>[] = [
   createTableColumn<ScanProfile>({
     columnId: "name",
     renderHeaderCell: () => {
-      return "Name";
+      return "Tên Profile";
     },
     renderCell: (item) => {
       return item.name;
+    },
+  }),
+  createTableColumn<ScanProfile>({
+    columnId: "desc",
+    renderHeaderCell: () => {
+      return "Mô tả";
+    },
+    renderCell: (item) => {
+      return item.desc;
     },
   }),
   createTableColumn<ScanProfile>({
@@ -76,9 +95,23 @@ const columns: TableColumnDefinition<ScanProfile>[] = [
     renderHeaderCell: () => {
       return "Single action";
     },
-    renderCell: () => {
-      
-      return <Button icon={<OpenRegular />}>Open</Button>;
+    renderCell: (item) => {
+      const button = <Button icon={<OpenRegular />}>Open</Button>;
+      const title = `Xem chi tiết`;
+      const children = <ProfileDetail item={item} />;
+      const action = (
+        <Button appearance="primary" icon={<ShareRegular />}>
+          Share
+        </Button>
+      );
+      return (
+        <DialogComponent
+          buttonTitle={button}
+          title={title}
+          children={children}
+          action={action}
+        />
+      );
     },
   }),
   createTableColumn<ScanProfile>({
@@ -86,21 +119,51 @@ const columns: TableColumnDefinition<ScanProfile>[] = [
     renderHeaderCell: () => {
       return "Actions";
     },
-    renderCell: () => {
+    renderCell: (item) => {
+      const editButton = <Button icon={<EditRegular />}>Edit</Button>;
+      const editTitle = `Chỉnh sửa`;
+      const editChildren = <ProfileEdit item={item} />;
+      const editAction = (
+        <Button appearance="primary" icon={<SaveRegular />}>
+          Save
+        </Button>
+      );
+      const editDialog = (
+        <DialogComponent
+          buttonTitle={editButton}
+          title={editTitle}
+          children={editChildren}
+          action={editAction}
+        />
+      );
+
+      const deleteButton = <Button icon={<DeleteRegular />}>Xóa</Button>;
+      const deleteTitle = `Thực hiện xóa?`;
+      const deleteChildren = <>Bạn có muốn xóa {item.name} không?</>;
+      const deleteAction = (
+        <Button appearance="primary" icon={<DeleteRegular />}>
+          Xóa
+        </Button>
+      );
+      const deleteDialog = (
+        <DialogComponent
+          buttonTitle={deleteButton}
+          title={deleteTitle}
+          children={deleteChildren}
+          action={deleteAction}
+        />
+      );
       return (
         <>
-          <Button aria-label="Edit" icon={<EditRegular />} />
-          <Button aria-label="Delete" icon={<DeleteRegular />} />
+          {editDialog}
+          {deleteDialog}
         </>
       );
     },
   }),
 ];
 
-
 export default function ScanProfiles() {
-
-
   const [items, setItems] = useState<ScanProfile[]>([]);
   const token = localStorage.getItem("access_token");
   const config: AxiosConfig = {
@@ -120,19 +183,66 @@ export default function ScanProfiles() {
       .catch((error: { error: ScanProfile }) => {
         console.log(error);
       });
-  }
-  useEffect(
-    () => getData(), []
-  )
+  };
+  useEffect(() => getData(), []);
+  const createButton = (
+    <Button
+      icon={<FormNewRegular />}
+      appearance="primary"
+      style={{ marginRight: "8vh" }}
+    >
+      Tạo Profile Mới
+    </Button>
+  );
+  const createTitle = `Tạo Profile mới`;
+  const createChildren = <ProfileCreate />;
+  const createAction = (
+    <Button appearance="primary" icon={<FormNewRegular />}>
+      Tạo mới
+    </Button>
+  );
+  const createDialog = (
+    <DialogComponent
+      buttonTitle={createButton}
+      title={createTitle}
+      children={createChildren}
+      action={createAction}
+    />
+  );
   return (
-
     <>
-      <LargeTitle>
-        Scan Profiles
-      </LargeTitle>
-      <Title3>
-        Danh sách các Profile phục vụ Scan
-      </Title3>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          flexDirection: "row",
+        }}
+      >
+        <LargeTitle>Scan Profiles</LargeTitle>
+      </div>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          flexWrap: "wrap",
+          alignContent: "center",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <Body1Strong>Danh sách các Profile phục vụ Scan</Body1Strong>
+        <div>
+          <Button
+            icon={<CloudArrowUpRegular />}
+            appearance="secondary"
+            style={{ marginRight: "1vh" }}
+          >
+            Phục hồi Profile
+          </Button>
+          {createDialog}
+        </div>
+      </div>
+
       <DataGrid
         selectionMode="multiselect"
         items={items}
@@ -156,9 +266,6 @@ export default function ScanProfiles() {
           )}
         </DataGridBody>
       </DataGrid>
-
     </>
-
-
   );
 }

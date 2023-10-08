@@ -25,8 +25,9 @@ export interface Scan {
 }
 
 export interface ScanProfile {
-  id: 1;
+  id: number;
   name: string;
+  desc: string;
   filter: string;
   output: string;
   configuration: string;
