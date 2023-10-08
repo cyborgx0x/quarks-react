@@ -9,7 +9,7 @@ import {
     Input,
     Label,
 } from "@fluentui/react-components";
-import { PersonRegular, Eye24Regular } from "@fluentui/react-icons";
+// import { PersonRegular, Eye24Regular } from "@fluentui/react-icons";
 import type { ButtonProps } from "@fluentui/react-components";
 import { LoginData } from "../type";
 import { useNavigate } from 'react-router-dom';
@@ -34,7 +34,7 @@ const EyeIcon: React.FC<ButtonProps> = (props) => {
         <Button
             {...props}
             appearance="transparent"
-            icon={<Eye24Regular />}
+            // icon={<Eye24Regular />}
             size="small"
         />
     );
@@ -55,7 +55,7 @@ export const LoginView = () => {
         const config: AxiosRequestConfig = {
             method: 'post',
             maxBodyLength: Infinity,
-            url: '/api/token/',
+            url: `${import.meta.env.VITE_HOST_URL}/api/token/`,
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -76,7 +76,9 @@ export const LoginView = () => {
         <div className={styles.root}>
             <div>
                 <Label htmlFor={beforeId}>Full name</Label>
-                <Input contentBefore={<PersonRegular />} id={beforeId} type="email" onChange={(e) => setLoginData({ ...loginData, username: e.target.value })} value={loginData.username} />
+                <Input 
+                // contentBefore={<PersonRegular />} 
+                id={beforeId} type="text" onChange={(e) => setLoginData({ ...loginData, username: e.target.value })} value={loginData.username} />
                 <Body1>
                     Your username that you register with our system
                 </Body1>
