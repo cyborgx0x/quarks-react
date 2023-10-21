@@ -10,6 +10,7 @@ import {
   createTableColumn,
   Button,
   Body1Strong,
+  SplitButton,
 } from "@fluentui/react-components";
 import { AxiosConfig, Template, APIResponse } from "../type";
 import axios from "axios";
@@ -120,11 +121,41 @@ const columns: TableColumnDefinition<Template>[] = [
     renderCell: (item) => {
       const editButton = <Button icon={<EditRegular />}>Edit</Button>;
       const editTitle = `Chỉnh sửa`;
-      const editChildren = <TemplateEdit item={item} />;
+      const [updateTemplate, setUpdateTemplate] = useState<Template>(item)
+      const editChildren = <TemplateEdit item={item} updateState={setUpdateTemplate}/>;
+      const onClick = () => {
+        const token = localStorage.getItem("access_token")
+
+        let data = JSON.stringify(updateTemplate);
+        
+        let config = {
+          method: 'put',
+          maxBodyLength: Infinity,
+          url: `http://localhost:8000//api/user/templates/${item.id}/`,
+          headers: { 
+            'Content-Type': 'application/json', 
+            'Authorization': `Bearer ${token}`
+          },
+          data : data
+        };
+        
+        axios.request(config)
+        .then((response) => {
+          console.log(JSON.stringify(response.data));
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+        
+      };
+
+      const primaryActionButtonProps = {
+        onClick,
+      };
       const editAction = (
-        <Button appearance="primary" icon={<SaveRegular />}>
+        <SplitButton appearance="primary" icon={<SaveRegular />} primaryActionButton={primaryActionButtonProps}>
           Save
-        </Button>
+        </SplitButton>
       );
       const editDialog = (
         <DialogComponent

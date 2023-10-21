@@ -27,9 +27,9 @@ const useStyles = makeStyles({
 });
 
 export default function TemplateEdit({
-  item,
+  item, updateState
 }: {
-  item: Template;
+  item: Template; updateState: React.Dispatch<React.SetStateAction<Template>>
 }): ReactElement {
   const templateId = useId("template_id");
   const templateAuthor = useId("template_author");
@@ -50,14 +50,17 @@ export default function TemplateEdit({
         placeholder={data.id}
         value={data.id}
         disabled
+        
       />
       <Label htmlFor={templateAuthor}>Author:</Label>
       <Input
         contentBefore={<Person />}
         id={templateAuthor}
         placeholder={data.info.author}
-        value={data.info.author}
-        disabled
+        
+        onChange={(e) =>
+          updateState({ ...item, author: e.target.value })
+        }
       />
 
       <Divider />
