@@ -73,6 +73,15 @@ const columns: TableColumnDefinition<Template>[] = [
     },
   }),
   createTableColumn<Template>({
+    columnId: "desc",
+    renderHeaderCell: () => {
+      return "Mô tả";
+    },
+    renderCell: (item) => {
+      return item.desc.slice(0, 100) + "...";
+    },
+  }),
+  createTableColumn<Template>({
     columnId: "lastUpdated",
     renderHeaderCell: () => {
       return "Last updated";

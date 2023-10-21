@@ -41,7 +41,9 @@ export interface Template {
   name: string;
   author: string;
   tag: string;
+  desc: string;
   severity: string;
+  templateData: string | undefined; 
   created_at: string;
   modified_at: string;
 }

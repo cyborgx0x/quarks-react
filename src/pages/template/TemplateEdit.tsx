@@ -36,10 +36,7 @@ export default function TemplateEdit({
   const templateTag = useId("template_tag");
   const templateDesc = useId("template_desc");
   const templateContentYaml = useId("template_content");
-  const data: TemplateData = YAML.parse(templateData);
-  const templateContent = YAML.stringify(data);
-  console.log(templateContent);
-  console.log(item);
+
   const classes = useStyles();
   return (
     <div className={classes.container}>
@@ -47,8 +44,8 @@ export default function TemplateEdit({
       <Input
         contentBefore={<DocumentRegular />}
         id={templateId}
-        placeholder={data.id}
-        value={data.id}
+        placeholder={item.name}
+        value={item.name}
         disabled
         
       />
@@ -56,7 +53,7 @@ export default function TemplateEdit({
       <Input
         contentBefore={<Person />}
         id={templateAuthor}
-        placeholder={data.info.author}
+        placeholder={item.author}
         
         onChange={(e) =>
           updateState({ ...item, author: e.target.value })
@@ -64,12 +61,14 @@ export default function TemplateEdit({
       />
 
       <Divider />
-      <Label htmlFor={templateTag}>Tag:</Label>
+      <Label htmlFor={templateTag} >Tag:</Label>
       <Input
         contentBefore={<Tag16Regular />}
         id={templateTag}
-        placeholder={data.info.tags.toString()}
-        value={data.info.tags.toString()}
+        placeholder={item.tag}
+        onChange={(e) =>
+          updateState({ ...item, tag: e.target.value })
+        }
       />
       <Divider />
       <Label htmlFor={templateDesc} size="medium">
@@ -78,13 +77,18 @@ export default function TemplateEdit({
       <Textarea
         resize="vertical"
         id={templateDesc}
-        placeholder={data.info.description}
-        value={data.info.description}
+        placeholder={item.desc}
+        onChange={(e) =>
+          updateState({ ...item, desc: e.target.value })
+        }
       />
       <Label htmlFor={templateContentYaml} size="medium">
         Content:
       </Label>
-      <CodeMirror value={templateData} height="300px" theme={vscodeDark} />
+      <CodeMirror  value={item.templateData} height="300px" theme={vscodeDark}  
+      onChange={(value) => {
+        updateState({ ...item, templateData: value })
+      }}/>
     </div>
   );
 }
