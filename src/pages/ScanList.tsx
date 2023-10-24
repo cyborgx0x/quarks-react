@@ -19,12 +19,15 @@ import { APIResponse, AxiosConfig, Scan } from "../type";
 import axios from "axios";
 import {
   DeleteRegular,
-  EditRegular,
   OpenRegular,
   ArrowSyncRegular,
   MoreCircleRegular,
+  ArrowExportRegular,
+  PrintRegular
 } from "@fluentui/react-icons";
 import CardScan from "../components/CardScan";
+import ReportView from "./Report";
+import DialogComponent from "../components/DialogRegular";
 
 const useStyles = makeStyles({
   root: {
@@ -117,9 +120,22 @@ const columns: TableColumnDefinition<Scan>[] = [
       return "Actions";
     },
     renderCell: () => {
+      const button = <Button aria-label="Xuất báo cáo" icon={<ArrowExportRegular />} >Report</Button>
+      const title = `Xuất Báo Cáo`;
+      const children = <ReportView />;
+      const action = (
+        <Button appearance="primary" icon={<PrintRegular />}>
+          In ra PDF
+        </Button>
+      );
       return (
         <>
-          <Button aria-label="Edit" icon={<EditRegular />} />
+          <DialogComponent
+            buttonTitle={button}
+            title={title}
+            children={children}
+            action={action}
+          />
           <Button aria-label="Delete" icon={<DeleteRegular />} />
         </>
       );

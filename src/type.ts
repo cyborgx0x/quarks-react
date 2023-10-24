@@ -108,3 +108,14 @@ export type TemplateData = {
   info: Info;
   http: Http[];
 };
+
+export interface ReportPeople {
+  name: string,
+  position: string,
+  email: string
+}
+
+export interface Scope {
+  type: string
+  target: string
+}

@@ -7,6 +7,7 @@ const TemplateList = lazy(async () => import("./pages/Templates"));
 const ScanList = lazy(async () => import("./pages/ScanList"));
 const ScanProfiles = lazy(async () => import("./pages/Profiles"));
 const TargetList = lazy(async () => import("./pages/TargetList"));
+const ReportView = lazy(async () => import("./pages/Report"));
 
 const Login = lazy(async () => import("./pages/Login"));
 
@@ -21,6 +22,7 @@ export default function App(): ReactElement {
             <Route path="/scans" element={<ScanList />} />
             <Route path="/profiles" element={<ScanProfiles />} />
             <Route path="/targets" element={<TargetList />} />
+            <Route path="/report" element={<ReportView />} />
           </Routes>
         </LayoutProvider>
       </Suspense>
