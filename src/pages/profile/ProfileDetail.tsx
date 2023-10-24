@@ -32,13 +32,12 @@ export default function ProfileDetail({
       <Subtitle1>Mô tả: {item.desc}</Subtitle1>
 
       <Text>Các tùy chọn:</Text>
-      <code>
-        {item.option}
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Non rem quas
-        commodi veniam quibusdam, incidunt porro laborum sit. Magnam voluptatum,
-        praesentium eos voluptate nesciunt vero omnis doloremque facere
-        inventore est.
-      </code>
+      {item.configuration &&
+        <>
+          follow_redirects: {item.configuration.follow_redirects}
+        </>
+
+      }
 
       <Divider />
     </div>

@@ -11,7 +11,7 @@ import {
   Input,
   Select,
 } from "@fluentui/react-components";
-import { DocumentRegular } from "@fluentui/react-icons/lib/fonts";
+import { DocumentRegular, TextDescriptionRegular } from "@fluentui/react-icons/lib/fonts";
 
 import { ReactElement } from "react";
 import { Switch } from "@fluentui/react-components";
@@ -30,6 +30,7 @@ const useStyles = makeStyles({
 export default function ProfileCreate({ newProfile, setNewProfile }: { newProfile: ScanProfile, setNewProfile: React.Dispatch<React.SetStateAction<ScanProfile>> }): ReactElement {
   const classes = useStyles();
   const ProfileName = useId("profile_name");
+  const ProfileDesc = useId("profile_desc");
 
   const maxRedirect = useId("max-redirect");
   const customHeader = useId("custom-header");
@@ -45,7 +46,13 @@ export default function ProfileCreate({ newProfile, setNewProfile }: { newProfil
         placeholder="Nhập tên dễ nhớ cho Profile"
         onChange={(e) => setNewProfile({ ...newProfile, name: e.target.value })}
       />
-
+      <Label htmlFor={ProfileDesc}>Mô tả cho Profle:</Label>
+      <Input
+        contentBefore={<TextDescriptionRegular />}
+        id={ProfileDesc}
+        placeholder="Mô tả ngắn sẽ được hiển thị khi tùy chọn Scan"
+        onChange={(e) => setNewProfile({ ...newProfile, desc: e.target.value })}
+      />
       <Title3>Tùy chọn chuyển hướng</Title3>
       <Switch label="Follow Redirects" {...follow_redirects} onChange={(e) => setNewProfile({ ...newProfile, configuration: { ...newProfile.configuration, follow_redirects: e.target.value } })} />
       <Switch label="Follow Redirects on the same Host" {...follow_redirects} />
@@ -59,13 +66,16 @@ export default function ProfileCreate({ newProfile, setNewProfile }: { newProfil
       <Title3>Template Filter</Title3>
       <Select>
         <option>Tất cả</option>
+        <option>Tháng qua</option>
+        <option>Năm qua</option>
+
       </Select>
       <Divider />
 
-      <Title3>Scan Option</Title3>
       <Label htmlFor={customHeader}>Custom header:</Label>
       <Input contentBefore={<AddRegular />} id={customHeader} />
-      <Body1>Custom Header will Appear Here</Body1>
+      <Title3>Tùy chọn phân tích</Title3>
+      <Body1>Các option hỗ trợ phân tích vuln</Body1>
       <Divider />
     </div>
   );

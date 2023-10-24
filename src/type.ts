@@ -22,7 +22,7 @@ export interface Scan {
   result: TemplateInfo[];
   created_at: string;
   modified_at: string;
-  status: number,
+  status: number;
   log: string;
 }
 
@@ -32,7 +32,9 @@ export interface ScanProfile {
   desc: string;
   filter: object;
   output: object;
-  configuration: object;
+  configuration: {
+    follow_redirects?: string;
+  };
   created_at: string;
   modified_at: string;
   option: object | null;

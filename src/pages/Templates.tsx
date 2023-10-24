@@ -182,12 +182,34 @@ const columns: TableColumnDefinition<Template>[] = [
           action={editAction}
         />
       );
+      const sendDelete = () => {
+        const token = localStorage.getItem("access_token")
+        const config = {
+          method: 'delete',
+          maxBodyLength: Infinity,
+          url: `http://localhost:8000/api/user/templates/${item.id}`,
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+        };
 
+        axios.request(config)
+          .then((response) => {
+            setOpen(false)
+            window.location.reload()
+            console.log(JSON.stringify(response.data));
+          })
+          .catch((error) => {
+            setOpen(false)
+            console.log(error);
+          });
+      }
       const deleteButton = <Button icon={<DeleteRegular />} onClick={() => setOpen2(true)}>Xóa</Button>;
       const deleteTitle = `Thực hiện xóa?`;
       const deleteChildren = <>Bạn có muốn xóa {item.name} không?</>;
       const deleteAction = (
-        <Button appearance="primary" icon={<DeleteRegular />}>
+        <Button appearance="primary" icon={<DeleteRegular />} onClick={() => sendDelete()}>
           Xóa
         </Button>
       );

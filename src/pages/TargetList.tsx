@@ -104,6 +104,29 @@ const columns: TableColumnDefinition<Target>[] = [
       return "Actions";
     },
     renderCell: (item): ReactElement => {
+      const sendDelete = () => {
+        const token = localStorage.getItem("access_token")
+        const config = {
+          method: 'delete',
+          maxBodyLength: Infinity,
+          url: `http://localhost:8000/api/user/targets/${item.id}`,
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+        };
+
+        axios.request(config)
+          .then((response) => {
+            setOpen(false)
+            window.location.reload()
+            console.log(JSON.stringify(response.data));
+          })
+          .catch((error) => {
+            setOpen(false)
+            console.log(error);
+          });
+      }
       const [open, setOpen] = useState<boolean>(false)
       const editButton = <Button icon={<EditRegular />} onClick={() => setOpen(true)}>Edit</Button>;
       const editTitle = `Chỉnh sửa`;
@@ -128,7 +151,7 @@ const columns: TableColumnDefinition<Target>[] = [
       const deleteTitle = `Thực hiện xóa?`;
       const deleteChildren = <>Bạn có muốn xóa {item.url} không?</>;
       const deleteAction = (
-        <Button appearance="primary" icon={<DeleteRegular />}>
+        <Button appearance="primary" icon={<DeleteRegular />} onClick={() => sendDelete()}>
           Xóa
         </Button>
       );
@@ -174,7 +197,7 @@ export default function TargetList(): ReactElement {
   };
   useEffect(() => getData(), []);
   const [open, setOpen] = useState<boolean>(false)
-  
+
   const createButton = (
     <Button
       icon={<FormNewRegular />}
@@ -187,7 +210,7 @@ export default function TargetList(): ReactElement {
   );
   const [URL, setURL] = useState<string>("")
   const [Org, setOrg] = useState<string>("")
-  
+
   const createTitle = `Tạo mục tiêu`;
   const createChildren = <TargetCreate setOrg={setOrg} setURL={setURL} />;
   const onClick = () => {
