@@ -107,6 +107,8 @@ const columns: TableColumnDefinition<Template>[] = [
       const button = <Button icon={<OpenRegular />}>Open</Button>;
       const title = `Xem chi tiết`;
       const children = <TemplateDetail item={item} />;
+      const [open, setOpen] = useState<boolean>(false)
+
       const action = (
         <Button appearance="primary" icon={<ShareRegular />}>
           Share
@@ -114,6 +116,8 @@ const columns: TableColumnDefinition<Template>[] = [
       );
       return (
         <DialogComponent
+          open={open}
+          setopen={setOpen}
           buttonTitle={button}
           title={title}
           children={children}
@@ -131,31 +135,33 @@ const columns: TableColumnDefinition<Template>[] = [
       const editButton = <Button icon={<EditRegular />}>Edit</Button>;
       const editTitle = `Chỉnh sửa`;
       const [updateTemplate, setUpdateTemplate] = useState<Template>(item)
-      const editChildren = <TemplateEdit item={item} updateState={setUpdateTemplate}/>;
+      const [open, setOpen] = useState<boolean>(false)
+      const [open2, setOpen2] = useState<boolean>(false)
+      const editChildren = <TemplateEdit item={item} updateState={setUpdateTemplate} />;
       const onClick = () => {
         const token = localStorage.getItem("access_token")
 
-        let data = JSON.stringify(updateTemplate);
-        
-        let config = {
+        const data = JSON.stringify(updateTemplate);
+
+        const config = {
           method: 'put',
           maxBodyLength: Infinity,
           url: `http://localhost:8000//api/user/templates/${item.id}/`,
-          headers: { 
-            'Content-Type': 'application/json', 
+          headers: {
+            'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
           },
-          data : data
+          data: data
         };
-        
+
         axios.request(config)
-        .then((response) => {
-          console.log(JSON.stringify(response.data));
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-        
+          .then((response) => {
+            console.log(JSON.stringify(response.data));
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+
       };
 
       const primaryActionButtonProps = {
@@ -168,6 +174,8 @@ const columns: TableColumnDefinition<Template>[] = [
       );
       const editDialog = (
         <DialogComponent
+          open={open}
+          setopen={setOpen}
           buttonTitle={editButton}
           title={editTitle}
           children={editChildren}
@@ -185,6 +193,8 @@ const columns: TableColumnDefinition<Template>[] = [
       );
       const deleteDialog = (
         <DialogComponent
+          open={open2}
+          setopen={setOpen2}
           buttonTitle={deleteButton}
           title={deleteTitle}
           children={deleteChildren}
@@ -203,6 +213,7 @@ const columns: TableColumnDefinition<Template>[] = [
 
 export default function TemplateList(): ReactElement {
   const [items, setItems] = useState<Template[]>([]);
+  const [open, setOpen] = useState<boolean>(false)
   const token = localStorage.getItem("access_token");
   const config: AxiosConfig = {
     method: "get",
@@ -241,6 +252,8 @@ export default function TemplateList(): ReactElement {
   );
   const createDialog = (
     <DialogComponent
+      open={open}
+      setopen={setOpen}
       buttonTitle={createButton}
       title={createTitle}
       children={createChildren}

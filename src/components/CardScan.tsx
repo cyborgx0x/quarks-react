@@ -10,6 +10,7 @@ import {
 import { MoreHorizontal20Regular, ScanObjectRegular } from "@fluentui/react-icons";
 import { Card, CardHeader } from "@fluentui/react-components";
 
+
 const useStyles = makeStyles({
     main: {
         ...shorthands.gap("36px"),
@@ -56,16 +57,12 @@ const useStyles = makeStyles({
 
 export default function CardScan(): React.ReactElement {
     const styles = useStyles();
-
+    
     return (
         <div className={styles.main}>
             <section className={styles.section}>
-
-
-
                 <Card className={styles.card}>
                     <CardHeader
-
                         header={<Text weight="semibold">Profile: 2023 CVEs</Text>}
                         description={
                             <Caption1 className={styles.caption}>Tạo bởi bạn</Caption1>

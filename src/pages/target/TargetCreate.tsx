@@ -20,7 +20,8 @@ const useStyles = makeStyles({
   },
 });
 
-export default function TargetCreate(): ReactElement {
+export default function TargetCreate({ setURL, setOrg }: { setURL: React.Dispatch<React.SetStateAction<string>>, setOrg: React.Dispatch<React.SetStateAction<string>> }): ReactElement {
+
   const targetURL = useId("target-url");
   const targetOrg = useId("target-org");
   const classes = useStyles();
@@ -32,6 +33,10 @@ export default function TargetCreate(): ReactElement {
         contentBefore={<LinkRegular />}
         id={targetURL}
         placeholder="example.com"
+        onChange={
+          (e) =>
+            setURL(e.target.value)
+        }
       />
       <Body1>
         Input the URL target, example: <code>example.com</code>.
@@ -41,6 +46,10 @@ export default function TargetCreate(): ReactElement {
         contentBefore={<OrganizationRegular />}
         id={targetOrg}
         placeholder="Some Organization"
+        onChange={
+          (e) =>
+            setOrg(e.target.value)
+        }
       />
     </div>
   );

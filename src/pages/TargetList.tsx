@@ -77,9 +77,10 @@ const columns: TableColumnDefinition<Target>[] = [
       return "Single action";
     },
     renderCell: (item) => {
-      const button = <Button icon={<OpenRegular />}>Open</Button>;
+      const button = <Button icon={<OpenRegular />} onClick={() => setOpen(true)}>Open</Button>;
       const title = `Xem chi tiết`;
       const children = <TargetDetail item={item} />;
+      const [open, setOpen] = useState<boolean>(false)
       const action = (
         <Button appearance="primary" icon={<ShareRegular />}>
           Share
@@ -87,6 +88,8 @@ const columns: TableColumnDefinition<Target>[] = [
       );
       return (
         <DialogComponent
+          open={open}
+          setopen={setOpen}
           buttonTitle={button}
           title={title}
           children={children}
@@ -100,25 +103,28 @@ const columns: TableColumnDefinition<Target>[] = [
     renderHeaderCell: () => {
       return "Actions";
     },
-    renderCell: (item) => {
-      const editButton = <Button icon={<EditRegular />}>Edit</Button>;
+    renderCell: (item): ReactElement => {
+      const [open, setOpen] = useState<boolean>(false)
+      const editButton = <Button icon={<EditRegular />} onClick={() => setOpen(true)}>Edit</Button>;
       const editTitle = `Chỉnh sửa`;
       const editChildren = <TargetEdit item={item} />;
       const editAction = (
-        <Button appearance="primary" icon={<SaveRegular />}>
+        <Button appearance="primary" icon={<SaveRegular />} >
           Save
         </Button>
       );
       const editDialog = (
         <DialogComponent
+          open={open}
+          setopen={setOpen}
           buttonTitle={editButton}
           title={editTitle}
           children={editChildren}
           action={editAction}
         />
       );
-
-      const deleteButton = <Button icon={<DeleteRegular />}>Xóa</Button>;
+      const [open2, setOpen2] = useState<boolean>(false)
+      const deleteButton = <Button icon={<DeleteRegular />} onClick={() => setOpen2(true)}>Xóa</Button>;
       const deleteTitle = `Thực hiện xóa?`;
       const deleteChildren = <>Bạn có muốn xóa {item.url} không?</>;
       const deleteAction = (
@@ -128,6 +134,8 @@ const columns: TableColumnDefinition<Target>[] = [
       );
       const deleteDialog = (
         <DialogComponent
+          open={open2}
+          setopen={setOpen2}
           buttonTitle={deleteButton}
           title={deleteTitle}
           children={deleteChildren}
@@ -165,24 +173,63 @@ export default function TargetList(): ReactElement {
       });
   };
   useEffect(() => getData(), []);
+  const [open, setOpen] = useState<boolean>(false)
+  
   const createButton = (
     <Button
       icon={<FormNewRegular />}
       appearance="primary"
       style={{ marginRight: "8vh" }}
+      onClick={() => setOpen(true)}
     >
       Tạo mục tiêu mới
     </Button>
   );
+  const [URL, setURL] = useState<string>("")
+  const [Org, setOrg] = useState<string>("")
+  
   const createTitle = `Tạo mục tiêu`;
-  const createChildren = <TargetCreate />;
+  const createChildren = <TargetCreate setOrg={setOrg} setURL={setURL} />;
+  const onClick = () => {
+    const token = localStorage.getItem("access_token")
+
+    const data = JSON.stringify({
+      url: URL,
+      org: Org
+    });
+
+    const config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: `http://localhost:8000//api/user/targets/`,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      data: data
+    };
+
+    axios.request(config)
+      .then((response) => {
+        setOpen(false)
+        getData()
+        console.log(JSON.stringify(response.data));
+      })
+      .catch((error) => {
+        setOpen(false)
+        console.log(error);
+      });
+
+  };
   const createAction = (
-    <Button appearance="primary" icon={<FormNewRegular />}>
+    <Button appearance="primary" icon={<FormNewRegular />} onClick={onClick}>
       Tạo mới
     </Button>
   );
   const createDialog = (
     <DialogComponent
+      setopen={setOpen}
+      open={open}
       buttonTitle={createButton}
       title={createTitle}
       children={createChildren}

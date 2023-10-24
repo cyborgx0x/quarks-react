@@ -33,7 +33,7 @@ export interface ScanProfile {
   configuration: string;
   created_at: string;
   modified_at: string;
-  option: null;
+  option: string | null;
 }
 
 export interface Template {

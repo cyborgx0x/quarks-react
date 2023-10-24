@@ -96,7 +96,8 @@ const columns: TableColumnDefinition<ScanProfile>[] = [
       return "Single action";
     },
     renderCell: (item) => {
-      const button = <Button icon={<OpenRegular />}>Open</Button>;
+      const [open, setOpen] = useState<boolean>(false)
+      const button = <Button icon={<OpenRegular />} onClick={() => setOpen(true)}>Open</Button>;
       const title = `Xem chi tiết`;
       const children = <ProfileDetail item={item} />;
       const action = (
@@ -106,6 +107,8 @@ const columns: TableColumnDefinition<ScanProfile>[] = [
       );
       return (
         <DialogComponent
+          open={open}
+          setopen={setOpen}
           buttonTitle={button}
           title={title}
           children={children}
@@ -120,7 +123,9 @@ const columns: TableColumnDefinition<ScanProfile>[] = [
       return "Actions";
     },
     renderCell: (item) => {
-      const editButton = <Button icon={<EditRegular />}>Edit</Button>;
+      const [open, setOpen] = useState<boolean>(false)
+      const [open2, setOpen2] = useState<boolean>(false)
+      const editButton = <Button icon={<EditRegular />} onClick={() => setOpen(true)}>Edit</Button>;
       const editTitle = `Chỉnh sửa`;
       const editChildren = <ProfileEdit item={item} />;
       const editAction = (
@@ -130,6 +135,8 @@ const columns: TableColumnDefinition<ScanProfile>[] = [
       );
       const editDialog = (
         <DialogComponent
+          open={open}
+          setopen={setOpen}
           buttonTitle={editButton}
           title={editTitle}
           children={editChildren}
@@ -137,7 +144,7 @@ const columns: TableColumnDefinition<ScanProfile>[] = [
         />
       );
 
-      const deleteButton = <Button icon={<DeleteRegular />}>Xóa</Button>;
+      const deleteButton = <Button icon={<DeleteRegular />} onClick={() => setOpen2(true)}>Xóa</Button>;
       const deleteTitle = `Thực hiện xóa?`;
       const deleteChildren = <>Bạn có muốn xóa {item.name} không?</>;
       const deleteAction = (
@@ -147,6 +154,8 @@ const columns: TableColumnDefinition<ScanProfile>[] = [
       );
       const deleteDialog = (
         <DialogComponent
+          open={open2}
+          setopen={setOpen2}
           buttonTitle={deleteButton}
           title={deleteTitle}
           children={deleteChildren}
@@ -185,11 +194,13 @@ export default function ScanProfiles() {
       });
   };
   useEffect(() => getData(), []);
+  const [open, setOpen] = useState<boolean>(false)
   const createButton = (
     <Button
       icon={<FormNewRegular />}
       appearance="primary"
       style={{ marginRight: "8vh" }}
+      onClick={() => setOpen(true)}
     >
       Tạo Profile Mới
     </Button>
@@ -203,6 +214,8 @@ export default function ScanProfiles() {
   );
   const createDialog = (
     <DialogComponent
+      open={open}
+      setopen={setOpen}
       buttonTitle={createButton}
       title={createTitle}
       children={createChildren}

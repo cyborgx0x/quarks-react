@@ -10,9 +10,9 @@ import {
 } from "@fluentui/react-components";
 import { ReactElement } from "react";
 
-export default function DialogComponent({ buttonTitle, title, children, action }: { buttonTitle: ReactElement, title: string, children: ReactElement, action: ReactElement }): ReactElement {
+export default function DialogComponent({ buttonTitle, title, children, action, open, setopen }: { buttonTitle: ReactElement, title: string, children: ReactElement, action: ReactElement, open: boolean, setopen: React.Dispatch<React.SetStateAction<boolean>> }): ReactElement {
     return (
-        <Dialog>
+        <Dialog open={open}>
             <DialogTrigger disableButtonEnhancement>
                 {buttonTitle}
             </DialogTrigger>
@@ -24,7 +24,7 @@ export default function DialogComponent({ buttonTitle, title, children, action }
                     </DialogContent>
                     <DialogActions>
                         <DialogTrigger disableButtonEnhancement>
-                            <Button appearance="secondary">Close</Button>
+                            <Button appearance="secondary" onClick={()=>setopen(false)}>Close</Button>
                         </DialogTrigger>
                         {action}
                     </DialogActions>

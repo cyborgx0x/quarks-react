@@ -8,9 +8,7 @@ import {
   Textarea,
 } from "@fluentui/react-components";
 import { ReactElement } from "react";
-import { Template, TemplateData } from "../../type";
-import YAML from "yaml";
-import { templateData } from "../../yamlData";
+import { Template } from "../../type";
 import { DocumentRegular, Tag16Regular } from "@fluentui/react-icons/lib/fonts";
 import { Person } from "@mui/icons-material";
 import CodeMirror from "@uiw/react-codemirror";
@@ -47,14 +45,14 @@ export default function TemplateEdit({
         placeholder={item.name}
         value={item.name}
         disabled
-        
+
       />
       <Label htmlFor={templateAuthor}>Author:</Label>
       <Input
         contentBefore={<Person />}
         id={templateAuthor}
         placeholder={item.author}
-        
+
         onChange={(e) =>
           updateState({ ...item, author: e.target.value })
         }
@@ -85,10 +83,10 @@ export default function TemplateEdit({
       <Label htmlFor={templateContentYaml} size="medium">
         Content:
       </Label>
-      <CodeMirror  value={item.templateData} height="300px" theme={vscodeDark}  
-      onChange={(value) => {
-        updateState({ ...item, templateData: value })
-      }}/>
+      <CodeMirror value={item.templateData} height="300px" theme={vscodeDark}
+        onChange={(value) => {
+          updateState({ ...item, templateData: value })
+        }} />
     </div>
   );
 }
