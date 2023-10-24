@@ -104,10 +104,10 @@ const columns: TableColumnDefinition<Template>[] = [
       return "Xem Chi Tiết";
     },
     renderCell: (item) => {
-      const button = <Button icon={<OpenRegular />}>Open</Button>;
+      const [open, setOpen] = useState<boolean>(false)
+      const button = <Button icon={<OpenRegular />} onClick={() => setOpen(true)}>Open</Button>;
       const title = `Xem chi tiết`;
       const children = <TemplateDetail item={item} />;
-      const [open, setOpen] = useState<boolean>(false)
 
       const action = (
         <Button appearance="primary" icon={<ShareRegular />}>
@@ -132,11 +132,11 @@ const columns: TableColumnDefinition<Template>[] = [
       return "Hành động khác";
     },
     renderCell: (item) => {
-      const editButton = <Button icon={<EditRegular />}>Edit</Button>;
       const editTitle = `Chỉnh sửa`;
       const [updateTemplate, setUpdateTemplate] = useState<Template>(item)
       const [open, setOpen] = useState<boolean>(false)
       const [open2, setOpen2] = useState<boolean>(false)
+      const editButton = <Button icon={<EditRegular />} onClick={() => setOpen(true)}>Edit</Button>;
       const editChildren = <TemplateEdit item={item} updateState={setUpdateTemplate} />;
       const onClick = () => {
         const token = localStorage.getItem("access_token")
@@ -146,7 +146,7 @@ const columns: TableColumnDefinition<Template>[] = [
         const config = {
           method: 'put',
           maxBodyLength: Infinity,
-          url: `http://localhost:8000//api/user/templates/${item.id}/`,
+          url: `http://localhost:8000/api/user/templates/${item.id}/`,
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
@@ -183,7 +183,7 @@ const columns: TableColumnDefinition<Template>[] = [
         />
       );
 
-      const deleteButton = <Button icon={<DeleteRegular />}>Xóa</Button>;
+      const deleteButton = <Button icon={<DeleteRegular />} onClick={() => setOpen2(true)}>Xóa</Button>;
       const deleteTitle = `Thực hiện xóa?`;
       const deleteChildren = <>Bạn có muốn xóa {item.name} không?</>;
       const deleteAction = (
@@ -239,6 +239,7 @@ export default function TemplateList(): ReactElement {
       icon={<FormNewRegular />}
       appearance="primary"
       style={{ marginRight: "8vh" }}
+      onClick={() => setOpen(true)}
     >
       Tạo Template Mới
     </Button>

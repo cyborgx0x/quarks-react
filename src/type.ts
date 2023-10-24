@@ -30,12 +30,12 @@ export interface ScanProfile {
   id: number;
   name: string;
   desc: string;
-  filter: string;
-  output: string;
-  configuration: string;
+  filter: object;
+  output: object;
+  configuration: object;
   created_at: string;
   modified_at: string;
-  option: string | null;
+  option: object | null;
 }
 
 export interface Template {

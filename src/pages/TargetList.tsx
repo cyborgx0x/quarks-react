@@ -201,7 +201,7 @@ export default function TargetList(): ReactElement {
     const config = {
       method: 'post',
       maxBodyLength: Infinity,
-      url: `http://localhost:8000//api/user/targets/`,
+      url: `http://localhost:8000/api/user/targets/`,
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`

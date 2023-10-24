@@ -209,7 +209,7 @@ const columns: TableColumnDefinition<Scan>[] = [
         const config = {
           method: 'delete',
           maxBodyLength: Infinity,
-          url: `http://localhost:8000//api/user/scans/${item.id}`,
+          url: `http://localhost:8000/api/user/scans/${item.id}`,
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
@@ -283,12 +283,12 @@ export default function ScanList(): ReactElement {
     id: 1,
     name: '',
     desc: '',
-    filter: '',
-    output: '',
-    configuration: '',
+    filter: {},
+    output: {},
+    configuration: {},
     created_at: '',
     modified_at: '',
-    option: '',
+    option: {},
   }]);
   const selectTarget = useId('multi-target');
   const selectProfile = useId();
@@ -415,7 +415,7 @@ export default function ScanList(): ReactElement {
     const config = {
       method: 'post',
       maxBodyLength: Infinity,
-      url: `http://localhost:8000//api/user/scans/`,
+      url: `http://localhost:8000/api/user/scans/`,
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`

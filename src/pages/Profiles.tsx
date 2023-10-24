@@ -56,8 +56,8 @@ const columns: TableColumnDefinition<ScanProfile>[] = [
     renderHeaderCell: () => {
       return "filter";
     },
-    renderCell: (item) => {
-      return item.filter;
+    renderCell: () => {
+      return '';
     },
   }),
   createTableColumn<ScanProfile>({
@@ -65,8 +65,8 @@ const columns: TableColumnDefinition<ScanProfile>[] = [
     renderHeaderCell: () => {
       return "output";
     },
-    renderCell: (item) => {
-      return item.output;
+    renderCell: () => {
+      return "";
     },
   }),
   createTableColumn<ScanProfile>({
@@ -74,8 +74,8 @@ const columns: TableColumnDefinition<ScanProfile>[] = [
     renderHeaderCell: () => {
       return "configuration";
     },
-    renderCell: (item) => {
-      return item.configuration;
+    renderCell: () => {
+      return "";
     },
   }),
   createTableColumn<ScanProfile>({
@@ -195,6 +195,17 @@ export default function ScanProfiles() {
   };
   useEffect(() => getData(), []);
   const [open, setOpen] = useState<boolean>(false)
+  const [newProfile, setNewProfile] = useState<ScanProfile>({
+    id: 1,
+    name: '',
+    desc: '',
+    filter: {},
+    output: {},
+    configuration: {},
+    created_at: '',
+    modified_at: '',
+    option: {},
+  })
   const createButton = (
     <Button
       icon={<FormNewRegular />}
@@ -206,9 +217,37 @@ export default function ScanProfiles() {
     </Button>
   );
   const createTitle = `Tạo Profile mới`;
-  const createChildren = <ProfileCreate />;
+  const handleCreateScanProfile = () => {
+    const token = localStorage.getItem("access_token")
+
+    const data = JSON.stringify(newProfile);
+
+    const config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: `http://localhost:8000/api/user/scan_profiles/`,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      data: data
+    };
+
+    axios.request(config)
+      .then((response) => {
+        setOpen(false)
+        getData()
+        console.log(JSON.stringify(response.data));
+      })
+      .catch((error) => {
+        setOpen(false)
+        console.log(error);
+      });
+
+  }
+  const createChildren = <ProfileCreate newProfile={newProfile} setNewProfile={setNewProfile} />;
   const createAction = (
-    <Button appearance="primary" icon={<FormNewRegular />}>
+    <Button appearance="primary" icon={<FormNewRegular />} onClick={() => handleCreateScanProfile()}>
       Tạo mới
     </Button>
   );
