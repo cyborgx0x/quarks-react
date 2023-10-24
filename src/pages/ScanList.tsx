@@ -14,7 +14,10 @@ import {
   Divider,
   Body1Strong,
   Dropdown,
-  Option
+  Option,
+  Text,
+  Body1Stronger,
+  Spinner
 } from "@fluentui/react-components";
 import { ReactElement, useEffect, useState } from "react";
 import { APIResponse, AxiosConfig, Scan, ScanProfile, Target } from "../type";
@@ -32,6 +35,7 @@ import CardScan from "../components/CardScan";
 import ReportView from "./Report";
 import DialogComponent from "../components/DialogRegular";
 import { Select, useId } from "@fluentui/react-components";
+import ScanDetailView from "./scan/ScanDetail";
 
 const useStyles = makeStyles({
   root: {
@@ -73,10 +77,43 @@ const columns: TableColumnDefinition<Scan>[] = [
   createTableColumn<Scan>({
     columnId: "result",
     renderHeaderCell: () => {
-      return "Kết quả";
+      return "Thống kê";
     },
     renderCell: (item) => {
-      return item.result;
+      if (item.result) {
+        const { result } = item
+        return (<div>
+          <Body1Strong>Info: {result.filter(item => item.info.severity === "info").length}</Body1Strong>
+          <Divider />
+          <Body1Strong>Medium: {result.filter(item => item.info.severity === "medium").length}</Body1Strong>
+          <Divider />
+          <Body1Strong>High: {result.filter(item => item.info.severity === "high").length}</Body1Strong>
+          <Divider /></div>)
+      }
+      return ""
+    },
+  }),
+  createTableColumn<Scan>({
+    columnId: "status",
+    renderHeaderCell: () => {
+      return "Trạng thái";
+    },
+    renderCell: (item) => {
+      if (item.status === 0) {
+        return "Chưa bắt đầu"
+      }
+      else if (item.status === 3) {
+        return "Hoàn thành"
+      }
+      else if (item.status === 4) {
+        return "Lỗi"
+      }
+      else {
+        return <>
+          <Spinner />
+          {" Processing"}
+        </>
+      }
     },
   }),
   createTableColumn<Scan>({
@@ -85,7 +122,30 @@ const columns: TableColumnDefinition<Scan>[] = [
       return "Profile quét";
     },
     renderCell: (item) => {
-      return item.profile.id;
+      return (
+        <div style={{}}>
+          <Body1Stronger>{item.profile.name}</Body1Stronger>
+          <Divider />
+          <Text>{item.profile.desc}</Text>
+        </div>
+      );
+    },
+  }),
+  createTableColumn<Scan>({
+
+    columnId: "targets",
+    renderHeaderCell: () => {
+      return <div>
+        Danh sách mục tiêu
+      </div>;
+    },
+    renderCell: (item) => {
+      return (
+        <div>
+          {item.targets.map(item => <>
+            <Body1Stronger>{item.url}</Body1Stronger><Divider /></>)}
+        </div>
+      );
     },
   }),
   createTableColumn<Scan>({
@@ -94,6 +154,9 @@ const columns: TableColumnDefinition<Scan>[] = [
       return "Thời gian tạo";
     },
     renderCell: (item) => {
+      const date = new Date(item.created_at);
+      const formattedDate = date.toLocaleString();
+      return formattedDate;
       return item.created_at;
     },
   }),
@@ -112,10 +175,24 @@ const columns: TableColumnDefinition<Scan>[] = [
   createTableColumn<Scan>({
     columnId: "singleAction",
     renderHeaderCell: () => {
-      return "Single action";
+      return "Xem chi tiết";
     },
-    renderCell: () => {
-      return <Button icon={<OpenRegular />}>Open</Button>;
+    renderCell: (item) => {
+      const [open, setOpen] = useState<boolean>(false)
+      const button = <Button icon={<OpenRegular />} onClick={() => setOpen(true)}>Open</Button>;
+      const title = "Scan Result"
+      const children = <ScanDetailView result={item.result} status={item.status} log={item.log} />
+      const action = <Button appearance="primary" icon={<PrintRegular />}>
+        In ra PDF
+      </Button>
+      return <DialogComponent
+        open={open}
+        setopen={setOpen}
+        buttonTitle={button}
+        title={title}
+        children={children}
+        action={action}
+      />
     },
   }),
   createTableColumn<Scan>({
@@ -123,8 +200,34 @@ const columns: TableColumnDefinition<Scan>[] = [
     renderHeaderCell: () => {
       return "Actions";
     },
-    renderCell: () => {
-      const button = <Button aria-label="Xuất báo cáo" icon={<ArrowExportRegular />} >Report</Button>
+    renderCell: (item) => {
+      const sendDelete = () => {
+        const token = localStorage.getItem("access_token")
+
+
+
+        const config = {
+          method: 'delete',
+          maxBodyLength: Infinity,
+          url: `http://localhost:8000//api/user/scans/${item.id}`,
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+        };
+
+        axios.request(config)
+          .then((response) => {
+            setOpen(false)
+            window.location.reload()
+            console.log(JSON.stringify(response.data));
+          })
+          .catch((error) => {
+            setOpen(false)
+            console.log(error);
+          });
+      }
+      const button = <Button aria-label="Xuất báo cáo" icon={<ArrowExportRegular />} onClick={() => setOpen(true)} >Report</Button>
       const title = `Xuất Báo Cáo`;
       const [open, setOpen] = useState<boolean>(false)
       const children = <ReportView />;
@@ -132,6 +235,17 @@ const columns: TableColumnDefinition<Scan>[] = [
         <Button appearance="primary" icon={<PrintRegular />}>
           In ra PDF
         </Button>
+
+      );
+      const buttonDelete = <Button aria-label="Delete" icon={<DeleteRegular />} onClick={() => setOpen2(true)} />
+      const titleDelete = `Xóa lượt quét`;
+      const [open2, setOpen2] = useState<boolean>(false)
+      const childrenDelete = <>Bạn có muốn xóa lượt quét này không?</>;
+      const actionDelete = (
+        <Button appearance="primary" icon={<DeleteRegular />} onClick={() => sendDelete()}>
+          Xác nhận xóa
+        </Button>
+
       );
       return (
         <>
@@ -143,7 +257,14 @@ const columns: TableColumnDefinition<Scan>[] = [
             children={children}
             action={action}
           />
-          <Button aria-label="Delete" icon={<DeleteRegular />} />
+          <DialogComponent
+            open={open2}
+            setopen={setOpen2}
+            buttonTitle={buttonDelete}
+            title={titleDelete}
+            children={childrenDelete}
+            action={actionDelete}
+          />
         </>
       );
     },
@@ -192,6 +313,8 @@ export default function ScanList(): ReactElement {
         console.log(error);
       });
   };
+  // const { data, error } = useQuery({ queryKey: ['scans'], queryFn: getData, refetchInterval: 5000 })
+  // console.log(data, error)
   const targetConfig: AxiosConfig = {
     method: "get",
     maxBodyLength: Infinity,
@@ -229,6 +352,19 @@ export default function ScanList(): ReactElement {
       });
   };
   useEffect(() => { getData(); getTarget(); getProfile() }, []);
+
+
+
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // if (items.filter(item => (item.status === 1 || item.status === 0)).length > 0) {
+      // }
+      getData()
+
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
   const styles = useStyles();
   const title = `Quét nâng cao`;
   const [open, setOpen] = useState<boolean>(false)
@@ -260,10 +396,8 @@ export default function ScanList(): ReactElement {
       <Divider />
       <label htmlFor={selectProfile}>Chọn Profile</label>
       {profileList &&
-
         <Select defaultValue={profileList[0].id} id={selectProfile} onChange={e => setProfile(parseInt(e.target.value))}>
           {profileList.map(item => <option value={item.id} key={item.id}>{item.name}</option>)}
-
         </Select>
       }
 
@@ -309,7 +443,22 @@ export default function ScanList(): ReactElement {
   const button = (<Button icon={<MoreCircleRegular />} appearance="secondary" onClick={() => setOpen(true)}>
     Quét nâng cao
   </Button>)
+  const columnSizingOptions = {
+    id: {
+      minWidth: 40,
+      defaultWidth: 80,
+    },
+    profile: {
+      defaultWidth: 180,
+      minWidth: 120,
 
+    },
+    targets: {
+      defaultWidth: 180,
+      minWidth: 120,
+
+    },
+  };
   return (
     <div className={styles.root}>
       <div
@@ -345,7 +494,7 @@ export default function ScanList(): ReactElement {
           minHeight: "42px",
         }}
       >
-        <Button icon={<ArrowSyncRegular />} appearance="subtle">
+        <Button icon={<ArrowSyncRegular />} appearance="subtle" disabled>
           Thay bằng Profile khác?
         </Button>
         <DialogComponent
@@ -364,6 +513,8 @@ export default function ScanList(): ReactElement {
           items={items}
           columns={columns}
           focusMode="composite"
+          resizableColumns
+          columnSizingOptions={columnSizingOptions}
         >
           <DataGridHeader>
             <DataGridRow>
@@ -373,8 +524,8 @@ export default function ScanList(): ReactElement {
             </DataGridRow>
           </DataGridHeader>
           <DataGridBody<Scan>>
-            {({ item, rowId }) => (
-              <DataGridRow<Scan> key={rowId}>
+            {({ item }) => (
+              <DataGridRow<Scan> key={item.id}>
                 {({ renderCell }) => (
                   <DataGridCell>{renderCell(item)}</DataGridCell>
                 )}

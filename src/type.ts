@@ -19,9 +19,11 @@ export interface Scan {
   profile: ScanProfile;
   targets: Target[];
   scan_at: string;
-  result: "high";
+  result: TemplateInfo[];
   created_at: string;
   modified_at: string;
+  status: number,
+  log: string;
 }
 
 export interface ScanProfile {
@@ -43,7 +45,7 @@ export interface Template {
   tag: string;
   desc: string;
   severity: string;
-  templateData: string | undefined; 
+  templateData: string | undefined;
   created_at: string;
   modified_at: string;
 }
@@ -110,12 +112,43 @@ export type TemplateData = {
 };
 
 export interface ReportPeople {
-  name: string,
-  position: string,
-  email: string
+  name: string;
+  position: string;
+  email: string;
 }
 
 export interface Scope {
-  type: string
-  target: string
+  type: string;
+  target: string;
 }
+
+export type TemplateInfo = {
+  template: string;
+  "template-url": string;
+  "template-id": string;
+  "template-path": string;
+  info: {
+    name: string;
+    author: string[];
+    tags: string[];
+    description: string;
+    reference?: string[];
+    severity: string;
+    metadata: {
+      "max-request"?: string;
+    };
+    remediation?: string;
+    classification: {
+      "cve-id"?: string[];
+      "cwe-id"?: string[];
+    };
+  };
+  type: string;
+  host: string;
+  "matched-at": string;
+  "extracted-results"?: string[];
+  request: string;
+  response: string;
+  timestamp: string;
+  "matcher-status": string;
+};
