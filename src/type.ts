@@ -34,6 +34,10 @@ export interface ScanProfile {
   output: object;
   configuration: {
     follow_redirects?: string;
+    "-H"?:string[]
+    "-a"?: string[]
+    "-tags"?: string[]
+    "-id"?: string[]
   };
   created_at: string;
   modified_at: string;

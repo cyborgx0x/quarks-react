@@ -10,22 +10,22 @@ export default function TemplateInfoCard({ templateInfo }: { templateInfo: Templ
         'template-id': templateId,
         info: {
             name,
-            // author,
-            // tags,
-            // description,
+            author,
+            tags,
+            description,
             reference,
             severity,
-            // metadata: { 'max-request': maxRequest },
+            metadata: { 'max-request': maxRequest },
 
         },
-        // type,
-        // host,
-        // 'matched-at': matchedAt,
+        type,
+        host,
+        'matched-at': matchedAt,
         'extracted-results': extractedResults,
-        // request,
-        // response,
-        // timestamp,
-        // 'matcher-status': matcherStatus,
+        request,
+        response,
+        timestamp,
+        'matcher-status': matcherStatus,
     } = templateInfo;
 
     return (
@@ -46,7 +46,7 @@ export default function TemplateInfoCard({ templateInfo }: { templateInfo: Templ
                         <ListItemText primary="Template ID" secondary={templateId} />
                     </ListItem>
 
-                    {/* <ListItem>
+                    <ListItem>
                         <ListItemText primary="Author" secondary={author.join(', ')} />
                     </ListItem>
                     <ListItem>
@@ -54,7 +54,7 @@ export default function TemplateInfoCard({ templateInfo }: { templateInfo: Templ
                     </ListItem>
                     <ListItem>
                         <ListItemText primary="Description" secondary={description} />
-                    </ListItem> */}
+                    </ListItem>
                     {reference &&
 
                         <ListItem>
@@ -64,7 +64,7 @@ export default function TemplateInfoCard({ templateInfo }: { templateInfo: Templ
                     <ListItem>
                         <ListItemText primary="Severity" secondary={severity} />
                     </ListItem>
-                    {/* <ListItem>
+                    <ListItem>
                         <ListItemText primary="Max Request" secondary={maxRequest} />
                     </ListItem>
 
@@ -73,17 +73,17 @@ export default function TemplateInfoCard({ templateInfo }: { templateInfo: Templ
                     </ListItem>
                     <ListItem>
                         <ListItemText primary="Host" secondary={host} />
-                    </ListItem> */}
-                    {/* <ListItem>
+                    </ListItem>
+                    <ListItem>
                         <ListItemText primary="Matched At" secondary={matchedAt} />
-                    </ListItem> */}
+                    </ListItem>
                     {extractedResults &&
 
                         <ListItem>
                             <ListItemText primary="Extracted Results" secondary={extractedResults.join(', ')} />
                         </ListItem>
                     }
-                    {/* <ListItem>
+                    <ListItem>
                         <code>
                             {request}
 
@@ -99,7 +99,7 @@ export default function TemplateInfoCard({ templateInfo }: { templateInfo: Templ
                     </ListItem>
                     <ListItem>
                         <ListItemText primary="Matcher Status" secondary={matcherStatus ? 'Matched' : 'Not matched'} />
-                    </ListItem> */}
+                    </ListItem>
                 </List>
             </CardContent>
         </Card>

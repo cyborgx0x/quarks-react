@@ -1,19 +1,15 @@
 import {
   useId,
-  Body1,
-  SpinButton,
-  // Input,
   Label,
-  Title3,
   Divider,
   makeStyles,
   shorthands,
   Input,
-  Select,
+  Body1Stronger,
 } from "@fluentui/react-components";
-import { DocumentRegular, TextDescriptionRegular } from "@fluentui/react-icons/lib/fonts";
+import { DocumentRegular, TextDescriptionRegular, DeleteRegular, TagRegular, PersonRegular, CardUiRegular } from "@fluentui/react-icons/lib/fonts";
 
-import { ReactElement } from "react";
+import { ReactElement, useState } from "react";
 import { Switch } from "@fluentui/react-components";
 import type { SwitchProps } from "@fluentui/react-components";
 import { AddRegular } from "@fluentui/react-icons";
@@ -27,16 +23,75 @@ const useStyles = makeStyles({
     alignItems: "stretch",
   },
 });
-export default function ProfileCreate({ newProfile, setNewProfile }: { newProfile: ScanProfile, setNewProfile: React.Dispatch<React.SetStateAction<ScanProfile>> }): ReactElement {
+export default function ProfileCreate({
+  newProfile,
+  setNewProfile,
+  header,
+  setHeader,
+  authorFilter,
+  setAuthorFilter,
+  tagFilter,
+  setTagFilter,
+  idFilter,
+  setIdFilter
+}: {
+  newProfile: ScanProfile,
+  setNewProfile: React.Dispatch<React.SetStateAction<ScanProfile>>,
+  header: string[],
+  setHeader: React.Dispatch<React.SetStateAction<string[]>>
+  authorFilter: string[],
+  setAuthorFilter: React.Dispatch<React.SetStateAction<string[]>>
+  tagFilter: string[],
+  setTagFilter: React.Dispatch<React.SetStateAction<string[]>>
+  idFilter: string[],
+  setIdFilter: React.Dispatch<React.SetStateAction<string[]>>
+}): ReactElement {
   const classes = useStyles();
   const ProfileName = useId("profile_name");
   const ProfileDesc = useId("profile_desc");
 
-  const maxRedirect = useId("max-redirect");
+
   const customHeader = useId("custom-header");
-  const disableRedirect = useId("disable-redirect");
+  const authorFilterID = useId("author-filter");
+  const tagFilterID = useId("tag-filter");
+  const IDFilterID = useId("id-filer");
+
+
   const follow_redirects: SwitchProps = {};
-  const disable_redirects: SwitchProps = {};
+
+
+  const [temp, setTemp] = useState<string>('')
+  const [tempAuthor, setTempAuthor] = useState<string>('')
+  const [tempTag, setTempTag] = useState<string>('')
+  const [tempID, setTempID] = useState<string>('')
+  const updateHeader = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault()
+      setHeader([...header, e.currentTarget.value])
+      setTemp('')
+    }
+  }
+  const updateTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault()
+      setTagFilter([...tagFilter, e.currentTarget.value])
+      setTempTag('')
+    }
+  }
+  const updateAuthor = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault()
+      setAuthorFilter([...authorFilter, e.currentTarget.value])
+      setTempAuthor('')
+    }
+  }
+  const updateID = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault()
+      setIdFilter([...idFilter, e.currentTarget.value])
+      setTempID('')
+    }
+  }
   return (
     <div className={classes.container}>
       <Label htmlFor={ProfileName}>Tên Profile:</Label>
@@ -53,29 +108,31 @@ export default function ProfileCreate({ newProfile, setNewProfile }: { newProfil
         placeholder="Mô tả ngắn sẽ được hiển thị khi tùy chọn Scan"
         onChange={(e) => setNewProfile({ ...newProfile, desc: e.target.value })}
       />
-      <Title3>Tùy chọn chuyển hướng</Title3>
+      <Divider />
       <Switch label="Follow Redirects" {...follow_redirects} onChange={(e) => setNewProfile({ ...newProfile, configuration: { ...newProfile.configuration, follow_redirects: e.target.value } })} />
-      <Switch label="Follow Redirects on the same Host" {...follow_redirects} />
-      <Label htmlFor={maxRedirect}>Max Redirects:</Label>
-      <SpinButton defaultValue={10} min={0} max={20} id={maxRedirect} />
-      <Label htmlFor={disableRedirect}>Disable Redirect:</Label>
-      <Switch label="Disable Redirect" {...disable_redirects} />
 
       <Divider />
 
-      <Title3>Template Filter</Title3>
-      <Select>
-        <option>Tất cả</option>
-        <option>Tháng qua</option>
-        <option>Năm qua</option>
-
-      </Select>
+      <Label htmlFor={customHeader}>Custom header</Label>
+      <Input contentBefore={<AddRegular />} id={customHeader} onKeyDown={(e) => updateHeader(e)} value={temp} onChange={e => { setTemp(e.target.value) }} />
+      {header.map(item => <div key={item} style={{ display: "flex", justifyContent: 'space-between' }}><Body1Stronger>{item}</Body1Stronger><DeleteRegular /></div>)}
       <Divider />
 
-      <Label htmlFor={customHeader}>Custom header:</Label>
-      <Input contentBefore={<AddRegular />} id={customHeader} />
-      <Title3>Tùy chọn phân tích</Title3>
-      <Body1>Các option hỗ trợ phân tích vuln</Body1>
+      <Label htmlFor={authorFilterID}>Author Filter</Label>
+      <Input contentBefore={<PersonRegular />} id={authorFilterID} onKeyDown={(e) => updateAuthor(e)} value={tempAuthor} onChange={e => { setTempAuthor(e.target.value) }} />
+      {authorFilter.map(item => <div key={item} style={{ display: "flex", justifyContent: 'space-between' }}><Body1Stronger>{item}</Body1Stronger><DeleteRegular /></div>)}
+      <Divider />
+
+      <Label htmlFor={tagFilterID}>Tag Filter</Label>
+      <Input contentBefore={<TagRegular />} id={tagFilterID} onKeyDown={(e) => updateTag(e)} value={tempTag} onChange={e => { setTempTag(e.target.value) }} />
+      {tagFilter.map(item => <div key={item} style={{ display: "flex", justifyContent: 'space-between' }}><Body1Stronger>{item}</Body1Stronger><DeleteRegular /></div>)}
+      <Divider />
+
+      <Label htmlFor={IDFilterID}>ID Filter</Label>
+      <Input contentBefore={<CardUiRegular />} id={IDFilterID} onKeyDown={(e) => updateID(e)} value={tempID} onChange={e => { setTempID(e.target.value) }} />
+      {idFilter.map(item => <div key={item} style={{ display: "flex", justifyContent: 'space-between' }}><Body1Stronger>{item}</Body1Stronger><DeleteRegular /></div>)}
+
+
       <Divider />
     </div>
   );

@@ -10,6 +10,7 @@ import {
   DataGridBody,
   DataGridCell,
   Button,
+  Body1Stronger,
 } from "@fluentui/react-components";
 
 import {
@@ -52,35 +53,87 @@ const columns: TableColumnDefinition<ScanProfile>[] = [
     },
   }),
   createTableColumn<ScanProfile>({
-    columnId: "filter",
+    columnId: "Option",
     renderHeaderCell: () => {
-      return "filter";
-    },
-    renderCell: () => {
-      return '';
-    },
-  }),
-  createTableColumn<ScanProfile>({
-    columnId: "output",
-    renderHeaderCell: () => {
-      return "output";
-    },
-    renderCell: () => {
-      return "";
-    },
-  }),
-  createTableColumn<ScanProfile>({
-    columnId: "configuration",
-    renderHeaderCell: () => {
-      return "configuration";
+      return "Scan Option";
     },
     renderCell: (item) => {
       return <div>
         {item.configuration &&
+          item.configuration.follow_redirects &&
           <>
-            follow_redirects: {item.configuration.follow_redirects}
+            <Body1Stronger>follow_redirects</Body1Stronger>
+            <div>
+
+              {item.configuration.follow_redirects}
+            </div>
           </>
 
+        }
+      </div>
+    },
+  }),
+  createTableColumn<ScanProfile>({
+    columnId: "tag",
+    renderHeaderCell: () => {
+      return "Tag Filter";
+    },
+    renderCell: (item) => {
+      return <div>
+        {item.configuration &&
+          item.configuration["-tags"] &&
+          <>
+            {item.configuration["-tags"].map(item => <div key={Math.random()}>{item}</div>)}
+          </>
+        }
+      </div>
+    },
+  }),
+  createTableColumn<ScanProfile>({
+    columnId: "author",
+    renderHeaderCell: () => {
+      return "Author Filter";
+    },
+    renderCell: (item) => {
+      return <div>
+        {item.configuration &&
+          item.configuration["-a"] &&
+          <>
+            {item.configuration["-a"].map(item => <div key={Math.random()}>{item}</div>)}
+          </>
+        }
+      </div>
+    },
+  }),
+  createTableColumn<ScanProfile>({
+    columnId: "idFiler",
+    renderHeaderCell: () => {
+      return "ID Filter";
+    },
+    renderCell: (item) => {
+      return <div>
+        {item.configuration &&
+          item.configuration["-id"] &&
+          <>
+            {item.configuration["-id"].map(item => <div key={Math.random()}>{item}</div>)}
+          </>
+        }
+      </div>
+    },
+  }),
+
+  createTableColumn<ScanProfile>({
+    columnId: "header",
+    renderHeaderCell: () => {
+      return "Custom Header";
+    },
+    renderCell: (item) => {
+      return <div>
+        {item.configuration &&
+          item.configuration["-H"] &&
+          <>
+            {item.configuration["-H"].map(item => <div key={Math.random()}>{item}</div>)}
+          </>
         }
       </div>
     },
@@ -223,6 +276,10 @@ export default function ScanProfiles() {
       });
   };
   useEffect(() => getData(), []);
+  const [header, setHeader] = useState<string[]>([])
+  const [authorFilter, setAuthorFilter] = useState<string[]>([])
+  const [tagFilter, setTagFilter] = useState<string[]>([])
+  const [idFilter, setIdFilter] = useState<string[]>([])
   const [open, setOpen] = useState<boolean>(false)
   const [newProfile, setNewProfile] = useState<ScanProfile>({
     id: 1,
@@ -230,7 +287,9 @@ export default function ScanProfiles() {
     desc: '',
     filter: {},
     output: {},
-    configuration: {},
+    configuration: {
+      "-H": []
+    },
     created_at: '',
     modified_at: '',
     option: {},
@@ -248,8 +307,8 @@ export default function ScanProfiles() {
   const createTitle = `Tạo Profile mới`;
   const handleCreateScanProfile = () => {
     const token = localStorage.getItem("access_token")
-
-    const data = JSON.stringify(newProfile);
+    const oridata: ScanProfile = { ...newProfile, configuration: { "-H": header, "-a": authorFilter, "-id": idFilter, "-tags": tagFilter } }
+    const data = JSON.stringify(oridata);
     console.log(data)
     const config = {
       method: 'post',
@@ -274,7 +333,18 @@ export default function ScanProfiles() {
       });
 
   }
-  const createChildren = <ProfileCreate newProfile={newProfile} setNewProfile={setNewProfile} />;
+  const createChildren = <ProfileCreate
+    newProfile={newProfile}
+    setNewProfile={setNewProfile}
+    header={header}
+    setHeader={setHeader}
+    authorFilter={authorFilter}
+    setAuthorFilter={setAuthorFilter}
+    tagFilter={tagFilter}
+    setTagFilter={setTagFilter}
+    idFilter={idFilter}
+    setIdFilter={setIdFilter}
+  />;
   const createAction = (
     <Button appearance="primary" icon={<FormNewRegular />} onClick={() => handleCreateScanProfile()}>
       Tạo mới
