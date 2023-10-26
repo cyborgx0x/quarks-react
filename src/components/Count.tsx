@@ -1,11 +1,12 @@
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import { TemplateInfo } from '../type';
 
-export default function VulnerabilityCountTable() {
+export default function VulnerabilityCountTable({ vulnerabilities }: { vulnerabilities: TemplateInfo[] }) {
   const vulnerabilityCounts = [
-    { level: 'Critical', count: 1 },
-    { level: 'High', count: 2 },
-    { level: 'Medium', count: 3 },
-    { level: 'Low', count: 6 }
+    { level: 'Critical', count: vulnerabilities.filter(item => item.info.severity === "critical").length },
+    { level: 'High', count: vulnerabilities.filter(item => item.info.severity === "high").length },
+    { level: 'Medium', count: vulnerabilities.filter(item => item.info.severity === "medium").length },
+    { level: 'Low', count: vulnerabilities.filter(item => item.info.severity === "info").length }
   ];
 
   return (

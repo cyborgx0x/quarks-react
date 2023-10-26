@@ -83,12 +83,15 @@ const columns: TableColumnDefinition<Scan>[] = [
       if (item.result) {
         const { result } = item
         return (<div>
-          <Body1Strong>Info: {result.filter(item => item.info.severity === "info").length}</Body1Strong>
+          <Body1Strong>Critical: {result.filter(item => item.info.severity === "critical").length}</Body1Strong>
+          <Divider />
+          <Body1Strong>High: {result.filter(item => item.info.severity === "high").length}</Body1Strong>
           <Divider />
           <Body1Strong>Medium: {result.filter(item => item.info.severity === "medium").length}</Body1Strong>
           <Divider />
-          <Body1Strong>High: {result.filter(item => item.info.severity === "high").length}</Body1Strong>
-          <Divider /></div>)
+          <Body1Strong>Info: {result.filter(item => item.info.severity === "info").length}</Body1Strong>
+          <Divider />
+        </div>)
       }
       return ""
     },
@@ -230,7 +233,7 @@ const columns: TableColumnDefinition<Scan>[] = [
       const button = <Button aria-label="Xuất báo cáo" icon={<ArrowExportRegular />} onClick={() => setOpen(true)} >Report</Button>
       const title = `Xuất Báo Cáo`;
       const [open, setOpen] = useState<boolean>(false)
-      const children = <ReportView />;
+      const children = <ReportView result={item.result} />;
       const action = (
         <Button appearance="primary" icon={<PrintRegular />}>
           In ra PDF
@@ -443,22 +446,22 @@ export default function ScanList(): ReactElement {
   const button = (<Button icon={<MoreCircleRegular />} appearance="secondary" onClick={() => setOpen(true)}>
     Quét nâng cao
   </Button>)
-  const columnSizingOptions = {
-    id: {
-      minWidth: 40,
-      defaultWidth: 80,
-    },
-    profile: {
-      defaultWidth: 180,
-      minWidth: 120,
+  // const columnSizingOptions = {
+  //   id: {
+  //     minWidth: 40,
+  //     defaultWidth: 80,
+  //   },
+  //   profile: {
+  //     defaultWidth: 180,
+  //     minWidth: 120,
 
-    },
-    targets: {
-      defaultWidth: 180,
-      minWidth: 120,
+  //   },
+  //   targets: {
+  //     defaultWidth: 180,
+  //     minWidth: 120,
 
-    },
-  };
+  //   },
+  // };
   return (
     <div className={styles.root}>
       <div
@@ -513,8 +516,8 @@ export default function ScanList(): ReactElement {
           items={items}
           columns={columns}
           focusMode="composite"
-          resizableColumns
-          columnSizingOptions={columnSizingOptions}
+        // resizableColumns
+        // columnSizingOptions={columnSizingOptions}
         >
           <DataGridHeader>
             <DataGridRow>

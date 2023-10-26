@@ -16,7 +16,7 @@ export default function DialogComponent({ buttonTitle, title, children, action, 
             <DialogTrigger disableButtonEnhancement>
                 {buttonTitle}
             </DialogTrigger>
-            <DialogSurface>
+            <DialogSurface style={{ minWidth: "600px" }}>
                 <DialogBody>
                     <DialogTitle>{title}</DialogTitle>
                     <DialogContent>
@@ -24,7 +24,7 @@ export default function DialogComponent({ buttonTitle, title, children, action, 
                     </DialogContent>
                     <DialogActions>
                         <DialogTrigger disableButtonEnhancement>
-                            <Button appearance="secondary" onClick={()=>setopen(false)}>Close</Button>
+                            <Button appearance="secondary" onClick={() => setopen(false)}>Close</Button>
                         </DialogTrigger>
                         {action}
                     </DialogActions>
