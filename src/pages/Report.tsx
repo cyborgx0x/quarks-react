@@ -1,6 +1,6 @@
 
 import ImageReport from './1.png'
-import VulnerabilityTable from "../components/VulnSummary";
+// import VulnerabilityTable from "../components/VulnSummary";
 import AbbreviationTable from "../components/Abreviation";
 import VulnerabilityDetailsTable from "../components/Example1";
 import VulnerabilityCountTable from "../components/Count";
@@ -85,7 +85,7 @@ const ReportPDF = ({ result, targets }: { result: TemplateInfo[], targets: Targe
             <h2>3.2 Mô tả chung các lỗ hổng</h2>
             <VulnerabilityCountTable vulnerabilities={result} />
 
-            <VulnerabilityTable />
+            {/* <VulnerabilityTable /> */}
             <h1>4. Báo cáo chi tiết các lỗ hổng</h1>
             <VulnerabilityDetailsTable vulnerabilities={result} />
 
