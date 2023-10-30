@@ -2,18 +2,12 @@ import { ReactElement } from "react";
 import { TemplateInfo } from "../../type";
 import TemplateInfoCard from "../../components/VulnerabitilyDetail";
 import { Body1, Body1Strong, Divider, Spinner } from "@fluentui/react-components";
-import { PDFViewer } from '@react-pdf/renderer';
-import { MyDocument } from "../../components/PDFDocument";
 
 export default function ScanDetailView({ result, status, log }: { result: TemplateInfo[], status: number, log: string }): ReactElement {
 
     return (
         <>
-            <div>
-                <PDFViewer width="100%" height="800px">
-                    <MyDocument />
-                </PDFViewer>
-            </div>
+
 
             {status === 4 && "Lỗi"}
 
