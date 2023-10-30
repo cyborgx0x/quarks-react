@@ -1,5 +1,3 @@
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
-
 export default function VulnerabilitySeverityTable() {
     const severityLevels = [
         { level: 'Info', score: 'N/A', description: 'Không có sự tác động trực tiếp đến mục tiêu. Đây chỉ là thông tin cần chú ý liên quan đến mục tiêu tấn công trong quá trình kiểm thử.' },
@@ -8,27 +6,26 @@ export default function VulnerabilitySeverityTable() {
         { level: 'High', score: '7.0-8.9', description: 'Lỗ hổng ở mức độ này khai thác khó hơn, tuy nhiên vẫn có thể dẫn đến leo thang đặc quyền hay đánh mất dữ liệu. Nên có kế hoạch giải quyết cụ thể và bản vá cho lỗ hổng này càng sớm càng tốt.' },
         { level: 'Critical', score: '9.0-10', description: 'Lỗ hổng ở mức độ này có thể khai thác trực tiếp và thường để lại hậu quả ở cấp hệ thống. Nên có kế hoạch giải quyết cụ thể và bản vá cho lỗ hổng này ngay lập tức.' }
     ];
-
+    const tableStyle = { width: "100%", border: " 1px solid black", borderCollapse: "collapse" }
+    const rowStyle = { border: "1px solid black", padding: "8px" }
     return (
-        <TableContainer component={Paper}>
-            <Table>
-                <TableHead>
-                    <TableRow>
-                        <TableCell>Mức độ nghiêm trọng</TableCell>
-                        <TableCell>Điểm CVSS</TableCell>
-                        <TableCell>Mô tả</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {severityLevels.map((item) => (
-                        <TableRow key={item.level}>
-                            <TableCell>{item.level}</TableCell>
-                            <TableCell>{item.score}</TableCell>
-                            <TableCell>{item.description}</TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
+        <table style={tableStyle}>
+            <thead>
+                <tr>
+                    <th style={rowStyle}>Mức độ nghiêm trọng</th>
+                    <th style={rowStyle}>Điểm CVSS</th>
+                    <th style={rowStyle}>Mô tả</th>
+                </tr>
+            </thead>
+            <tbody>
+                {severityLevels.map((item) => (
+                    <tr key={item.level}>
+                        <td style={rowStyle}>{item.level}</td>
+                        <td style={rowStyle}>{item.score}</td>
+                        <td style={rowStyle}>{item.description}</td>
+                    </tr>
+                ))}
+            </tbody>
+        </table>
     );
 }

@@ -20,25 +20,24 @@ export default function AbbreviationTable() {
         { abbreviation: 'XSS', description: 'Cross Site Scripting' },
         { abbreviation: 'XML', description: 'XML External Entities' }
     ];
-
+    const tableStyle = { width: "100%", border: " 1px solid black", borderCollapse: "collapse" }
+    const rowStyle = { border: "1px solid black", padding: "8px" }
     return (
-        <TableContainer component={Paper}>
-            <Table>
-                <TableHead>
-                    <TableRow>
-                        <TableCell>Từ viết tắt</TableCell>
-                        <TableCell>Mô tả</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {abbreviations.map((item) => (
-                        <TableRow key={item.abbreviation}>
-                            <TableCell>{item.abbreviation}</TableCell>
-                            <TableCell>{item.description}</TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
+        <table style={tableStyle}>
+            <thead>
+                <tr style={rowStyle}>
+                    <th style={rowStyle}>Từ viết tắt</th>
+                    <th style={rowStyle}>Mô tả</th>
+                </tr>
+            </thead>
+            <tbody>
+                {abbreviations.map((item) => (
+                    <tr key={item.abbreviation} style={rowStyle}>
+                        <td style={rowStyle}>{item.abbreviation}</td>
+                        <td style={rowStyle}>{item.description}</td>
+                    </tr>
+                ))}
+            </tbody>
+        </table>
     );
 }

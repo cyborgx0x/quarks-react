@@ -1,35 +1,29 @@
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 
-const data = [
-  {
-    type: "White Box",
-    target: "http://testweb.com"
-  },
-  {
-    type: "FULL SCAN",
-    target: "http://adsweb.com"
-  }
-];
+import { Target } from '../type';
 
-export default function ScopeTable() {
+export default function ScopeTable({ targets }: { targets: Target[] }) {
+  const tableStyle = { width: "100%", border: " 1px solid black", borderCollapse: "collapse" }
+  const rowStyle = { border: "1px solid black", padding: "8px" }
   return (
-    <TableContainer component={Paper}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Đánh giá</TableCell>
-            <TableCell>Chi tiết</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data.map((row) => (
-            <TableRow key={row.type}>
-              <TableCell>{row.type}</TableCell>
-              <TableCell>{row.target}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <table style={tableStyle}>
+      <tr>
+        <th style={rowStyle}>Tổ chức</th>
+        <th style={rowStyle}>Đường dẫn</th>
+      </tr>
+
+      {targets.map((row) => (
+        <tr>
+          <td style={rowStyle}>
+            {row.org}
+          </td>
+          <td style={rowStyle}>
+            {row.url}
+          </td>
+        </tr>
+
+      ))}
+
+    </table>
+
   );
 }

@@ -30,31 +30,30 @@ export default function VulnerabilityTable() {
         'Trạng thái: Open - CVSS: 4.0',
         'Trạng thái: Open - CVSS: 3.0'
     ];
-
+    const tableStyle = { width: "100%", border: " 1px solid black", borderCollapse: "collapse" }
+    const rowStyle = { border: "1px solid black", padding: "8px" }
     return (
-        <TableContainer component={Paper}>
-            <Table>
-                <TableHead>
-                    <TableRow>
-                        <TableCell>STT</TableCell>
-                        <TableCell>Điểm yếu</TableCell>
-                        <TableCell>Mức độ</TableCell>
-                        <TableCell>Khuyến nghị</TableCell>
-                        <TableCell>Ghi chú</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {stt.map((item, index) => (
-                        <TableRow key={item}>
-                            <TableCell>{item}</TableCell>
-                            <TableCell>{diemYeu[index]}</TableCell>
-                            <TableCell>{mucDo[index]}</TableCell>
-                            <TableCell>{khuyenNghi[index]}</TableCell>
-                            <TableCell>{ghiChu[index]}</TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
+        <table style={tableStyle}>
+            <thead>
+                <tr style={rowStyle}>
+                    <th style={rowStyle}>STT</th>
+                    <th style={rowStyle}>Điểm yếu</th>
+                    <th style={rowStyle}>Mức độ</th>
+                    <th style={rowStyle}>Khuyến nghị</th>
+                    <th style={rowStyle}>Ghi chú</th>
+                </tr>
+            </thead>
+            <tbody>
+                {stt.map((item, index) => (
+                    <tr key={item} style={rowStyle}>
+                        <td style={rowStyle}>{item}</td>
+                        <td style={rowStyle}>{diemYeu[index]}</td>
+                        <td style={rowStyle}>{mucDo[index]}</td>
+                        <td style={rowStyle}>{khuyenNghi[index]}</td>
+                        <td style={rowStyle}>{ghiChu[index]}</td>
+                    </tr>
+                ))}
+            </tbody>
+        </table>
     );
 }

@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 20px;
+            font-family: Arial, sans-serif;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid black;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Báo cáo lỗ hổng bảo mật</h1>
+    <main>
+        <h2>1. Thông tin liên hệ</h2>
+        <table>
+            <tr>
+                <th>Họ và tên</th>
+                <th>Chức Vụ</th>
+                <th>Email</th>
+            </tr>
+            <tr>
+                <td>John Doe</td>
+                <td>Giám đốc</td>
+                <td>john.doe@example.com</td>
+            </tr>
+            <tr>
+                <td>Jane Smith</td>
+                <td>Quản lý dự án</td>
+                <td>jane.smith@example.com</td>
+            </tr>
+        </table>
+    </main>
+</body>
+</html>
+
+
+    <!-- 2. Mô tả chung -->
+    <h1>2. Mô tả chung</h1>
+
+
+    <!-- 2.1 Phạm vi đánh giá -->
+    <h2>2.1 Phạm vi đánh giá</h2>
+    <p>Mục tiêu tiến hành đánh giá, kiểm thử bao gồm:</p>
+    <table style="width: 100%; border-collapse: collapse; border: 1px solid black;">
+        <tr>
+            <th style="border: 1px solid black; padding: 8px;">Đánh giá</th>
+            <th style="border: 1px solid black; padding: 8px;">Chi tiết</th>
+        </tr>
+        <tr>
+            <td style="border: 1px solid black; padding: 8px;">Black box</td>
+            <td style="border: 1px solid black; padding: 8px;">https://testvul.com</td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid black; padding: 8px;">White box</td>
+            <td style="border: 1px solid black; padding: 8px;">http://quangcao/demo.com</td>
+        </tr>
+        <!-- Thêm hàng và nội dung bổ sung tại đây -->
+    </table>
+
+    <!-- 2.2 Phương pháp đánh giá -->
+    <h2>2.2 Phương pháp đánh giá</h2>
+    <p>
+        Dưới đây sẽ mô tả một chu kỳ về phương pháp đánh giá của pentester để đánh giá tổng thể cơ sở hạ tầng mạng, các hệ
+        thống ứng dụng nội bộ của công ty dựa trên các phương pháp đánh giá NIST SP 800-115 Technical Guide to
+        Information Security Testing and Assessment, OWASP Testing Guide (v4) và một số framework do phòng An toàn thông tin  tự xây
+        dựng.
+    </p>
+    <p>Các giai đoạn trong việc kiểm thử xâm nhập</p>
+    <ul>
+        <li>Lên kế hoạch (Planning): Xác định phạm vi thực hiện, thu thập các mục đích và thông tin từ phía khách hàng
+        </li>
+        <li>Do thám (Discovery): thực hiện rà quét (scanning) và liệt kê (enumeration) để xác định những điểm yếu của
+            các đối tượng (hệ thống network, ứng dụng Web, ứng dụng mobile, mạng Wireless, Cloud) từ đó xác định các
+            cách khai thác phù hợp</li>
+        <li>Tấn công (Attack): Khai thác các lỗ hổng dựa trên các điểm yếu tìm được trong bước do thám.
+        </li>
+        <li>Báo cáo (Reporting): Tổng hợp tất cả các lỗ hổng tìm được, cách khai thác các lỗ hổng đó, sau đó báo lại cho
+            khách hàng</li>
+    </ul>
+    <p>Sơ đồ dưới đây sẽ thể hiện trình tự thực hiện các bước trên:</p>
+    <img src="1.png" alt="Sơ đồ thứ tự thực hiện các giai đoạn">
+
+    <h2>2.3 Các yếu tố rủi ro. </h2>
+    <p>Rủi ro được xác định dựa trên 2 yếu tố: khả năng xảy ra và hậu quả</p>
+    <ul>
+        <li>Khả năng xảy ra: đánh giá tiềm năng mà một lỗ hổng có thể được khai thác. Khả năng có thể xảy ra được đánh
+            giá dựa trên độ khó của tấn công, độ sẵn dùng của công cụ, kỹ năng chuyên môn của kẻ tấn công và môi trường
+            phía khách hàng.</li>
+        <li>Hậu quả: đánh giá thiệt hại mà một lỗ hổng có thể gây ra cho hệ thống, ví dụ như: tính bí mật, tính toàn vẹn
+            và tính sẵn dùng của hệ thống và dữ liệu bên khách hàng, ngoài ra còn có những thiệt hại về danh tiếng và
+            tài chính</li>
+    </ul>
+
+    <h2>2.4 Thang điểm đánh giá</h2>
+    <p>Sử dụng thang điểm đánh giá mức độ nghiêm trọng của lỗ hổng theo CVSS v3.0 (Common Vulnerability Scoring System
+        v3.0):
+    </p>
+    <table style="width: 100%; border-collapse: collapse; border: 1px solid black;">
+        <tr>
+            <th style="border: 1px solid black; padding: 8px;">Mức độ nghiêm trọng</th>
+            <th style="border: 1px solid black; padding: 8px;">Điểm CVSS</th>
+            <th style="border: 1px solid black; padding: 8px;">Mô tả</th>
+        </tr>
+        <tr>
+            <td style="border: 1px solid black; padding: 8px;">Info</td>
+            <td style="border: 1px solid black; padding: 8px;">N/A</td>
+            <td style="border: 1px solid black; padding: 8px;">Không có sự tác động trực tiếp đến mục tiêu. Đây chỉ là
+                thông tin cần chú ý liên quan đến mục tiêu tấn công trong quá trình kiểm thử. </td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid black; padding: 8px;">Low</td>
+            <td style="border: 1px solid black; padding: 8px;">0.1-3.9</td>
+            <td style="border: 1px solid black; padding: 8px;">Lỗ hổng ở mức độ này không thể khai thác được, tuy nhiên
+                chúng vẫn có thể tiết lộ nhiều thông tin của tổ chức. Nên có kế hoạch giải quyết và bản vá cho những lỗ
+                hổng này trong quá trình bảo trì.</td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid black; padding: 8px;">Medium</td>
+            <td style="border: 1px solid black; padding: 8px;">4.0-6.9</td>
+            <td style="border: 1px solid black; padding: 8px;">Lỗ hổng ở mức độ này vẫn tồn tại nhưng không thể khai
+                thác triệt để hoặc yêu cầu thêm các bước như social engineering. Nên có kế hoạch giải quyết và bản vá
+                cho các lỗ hổng này ngay sau khi các lỗ hổng ở mức high được giải quyết.</td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid black; padding: 8px;">High</td>
+            <td style="border: 1px solid black; padding: 8px;">7.0 - 8.9</td>
+            <td style="border: 1px solid black; padding: 8px;">Lỗ hổng ở mức độ này khai thác khó hơn, tuy nhiên vẫn có
+                thể dẫn đến leo thang đặc quyền hay đánh mất dữ liệu. Nên có kế hoạch giải quyết cụ thể và bản vá cho lỗ
+                hổng này càng sớm càng tốt.</td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid black; padding: 8px;">Critical</td>
+            <td style="border: 1px solid black; padding: 8px;">9.0-10</td>
+            <td style="border: 1px solid black; padding: 8px;">Lỗ hổng ở mức độ này có thể khai thác trực tiếp và thường
+                để lại hậu quả ở cấp hệ thống. Nên có kế hoạch giải quyết cụ thể và bản vá cho lỗ hổng này ngay lập tức.
+            </td>
+        </tr>
+    </table>
+    <p>Thông tin chi tiết về hệ thống đánh giá mức độ nghiêm trọng theo CVSS tham khảo tại:
+        https://www.first.org/cvss/specification-document </p>
+
+    <h1>3. Lỗ hổng và giải pháp khắc phục</h1>
+    <h2>3.1 Quy ước</h2>
+    <table style="width: 100%; border-collapse: collapse; border: 1px solid black;">
+        <tr>
+            <th style="border: 1px solid black; padding: 8px;">STT</th>
+            <th style="border: 1px solid black; padding: 8px;">Điểm yếu</th>
+            <th style="border: 1px solid black; padding: 8px;">Mức độ</th>
+            <th style="border: 1px solid black; padding: 8px;">Khuyến nghị</th>
+            <th style="border: 1px solid black; padding: 8px;">Ghi chú</th>
+        </tr>
+        <tr>
+            <td style="border: 1px solid black; padding: 8px;">#</td>
+            <td style="border: 1px solid black; padding: 8px;">Giải thích về lỗ hổng, điểm yếu tìm thấy trong quá trình
+                kiểm thử</td>
+            <td style="border: 1px solid black; padding: 8px;">Critical
+                <br>High
+                <br>Medium
+                <br>Low
+                <br>Info
+
+            </td>
+            <td style="border: 1px solid black; padding: 8px;">Đề xuất giải pháp khắc phục lỗ hổng</td>
+            <td style="border: 1px solid black; padding: 8px;">- Trạng thái lỗ hổng
+                <br>- Điểm CVSS
+            </td>
+            <td></td>
+        </tr>
+
+    </table>
+    <h2>3.2 Mô tả chung các lỗ hổng</h2>
+    <table style="width: 100%; border-collapse: collapse; border: 1px solid black;">
+        <tr>
+            <th style="border: 1px solid black; padding: 8px;">Mức độ</th>
+            <th style="border: 1px solid black; padding: 8px;">Số lượng lỗ hổng</th>
+        </tr>
+        <tr>
+            <td style="border: 1px solid black; padding: 8px;">Critical</td>
+            <td style="border: 1px solid black; padding: 8px;">1</td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid black; padding: 8px;">High</td>
+            <td style="border: 1px solid black; padding: 8px;">2</td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid black; padding: 8px;">Medium</td>
+            <td style="border: 1px solid black; padding: 8px;">3</td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid black; padding: 8px;">Low</td>
+            <td style="border: 1px solid black; padding: 8px;">6</td>
+        </tr>
+    </table>
+
+
+    <table style="width: 100%; border-collapse: collapse; border: 1px solid black;">
+        <tr>
+            <th style="border: 1px solid black; padding: 8px;">STT</th>
+            <th style="border: 1px solid black; padding: 8px;">Điểm yếu</th>
+            <th style="border: 1px solid black; padding: 8px;">Mức độ</th>
+            <th style="border: 1px solid black; padding: 8px;">Khuyến nghị</th>
+            <th style="border: 1px solid black; padding: 8px;">Ghi chú</th>
+        </tr>
+        <tr>
+            <td style="border: 1px solid black; padding: 8px;">1</td>
+            <td style="border: 1px solid black; padding: 8px;">SQL injection</td>
+            <td style="border: 1px solid black; padding: 8px;">Critical</td>
+            <td style="border: 1px solid black; padding: 8px;">Thực hiện truy vấn SQL an toàn qua ORM hoặc prepared
+                statement.</td>
+            <td style="border: 1px solid black; padding: 8px;"> Trạng thái: Open
+                - CVSS: 9.9
+            </td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid black; padding: 8px;">2</td>
+            <td style="border: 1px solid black; padding: 8px;">Sensitive data exposed </td>
+            <td style="border: 1px solid black; padding: 8px;">High</td>
+            <td style="border: 1px solid black; padding: 8px;">Từ chối tất cả quyền truy cập vào file chứa thông tin
+                nhạy cảm.</td>
+            <td style="border: 1px solid black; padding: 8px;">- Trạng thái: Open
+                - CVSS: 8.0
+            </td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid black; padding: 8px;">3</td>
+            <td style="border: 1px solid black; padding: 8px;">Broken Authentication</td>
+            <td style="border: 1px solid black; padding: 8px;">High</td>
+            <td style="border: 1px solid black; padding: 8px;">Xây dựng lại cơ chế quản lý cookie, session.</td>
+            <td style="border: 1px solid black; padding: 8px;">- Trạng thái: Open
+                - CVSS: 8.0
+
+            </td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid black; padding: 8px;">4</td>
+            <td style="border: 1px solid black; padding: 8px;">Directory listings</td>
+            <td style="border: 1px solid black; padding: 8px;">Medium</td>
+            <td style="border: 1px solid black; padding: 8px;">Từ chối tất cả quyền truy cập vào các thư mục nhạy cảm.
+            </td>
+            <td style="border: 1px solid black; padding: 8px;">- Trạng thái: Open
+                - CVSS: 6.0
+            </td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid black; padding: 8px;">5</td>
+            <td style="border: 1px solid black; padding: 8px;">Reflected XSS</td>
+            <td style="border: 1px solid black; padding: 8px;">Medium</td>
+            <td style="border: 1px solid black; padding: 8px;">Xây dựng bộ lọc XSS tốt hơn.
+
+            </td>
+            <td style="border: 1px solid black; padding: 8px;">- Trạng thái: Open
+                - CVSS: 4.0
+            </td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid black; padding: 8px;">6</td>
+            <td style="border: 1px solid black; padding: 8px;">Không có cơ chế chống bruteforce</td>
+            <td style="border: 1px solid black; padding: 8px;">Medium</td>
+            <td style="border: 1px solid black; padding: 8px;">Xây dựng cơ chế chống brute force.</td>
+            <td style="border: 1px solid black; padding: 8px;">- Trạng thái: Open
+                - CVSS: 4.0
+            </td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid black; padding: 8px;">7</td>
+            <td style="border: 1px solid black; padding: 8px;"> Enums Usernames</td>
+            <td style="border: 1px solid black; padding: 8px;">Low</td>
+            <td style="border: 1px solid black; padding: 8px;">Trả về thông báo chung. Nên sử dụng captcha sau 3 lần
+                đăng nhập sai
+
+            </td>
+            <td style="border: 1px solid black; padding: 8px;">- Trạng thái: Open
+                - CVSS: 3.0
+
+            </td>
+        </tr>
+
+
+    </table>
+
+
+    <!-- 4. Báo cáo chi tiết các lỗ hổng -->
+    <h1>4. Báo cáo chi tiết các lỗ hổng</h1>
+    <h2>4.1 SQL injection </h2>
+    <table style="width: 100%; border-collapse: collapse; border: 1px solid black;">
+        <tr>
+            <td style="border: 1px solid black; padding: 8px;">Mô tả</td>
+            <td style="border: 1px solid black; padding: 8px;">Lỗi SQL Injection ở chức năng xem các định dạng banner
+                cho phép attacker truy xuất dữ liệu từ database trái phép.</td>
+
+        </tr>
+        <tr>
+            <td style="border: 1px solid black; padding: 8px;">Tác động của lỗ hổng</td>
+            <td style="border: 1px solid black; padding: 8px;">Có thể đọc dữ liệu nhạy cảm từ cơ sở dữ liệu, sửa đổi dữ
+                liệu trong cơ sở dữ liệu, thực thi các hoạt động quản trị trên cơ sở dữ liệu.</td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid black; padding: 8px;">Domain/Url</td>
+            <td style="border: 1px solid black; padding: 8px;">https://testvul.com</td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid black; padding: 8px;">References</td>
+            <td style="border: 1px solid black; padding: 8px;">CWE-89 - Improper Neutralization of Special Elements used
+                in an SQL Command ('SQL Injection')</td>
+        </tr>
+
+    </table>
+    <p> <b>POC:</b> <br>1. Truy cập vào https://testvul.com <br> 2. Request: </p>
+
+    <h2>4.2 Sensitive data exposed </h2>
+    <table style="width: 100%; border-collapse: collapse; border: 1px solid black;">
+        <tr>
+            <td style="border: 1px solid black; padding: 8px;">Mô tả</td>
+            <td style="border: 1px solid black; padding: 8px;">Site để lộ thư mục chứa thông tin nhạy cảm .git.</td>
+
+        </tr>
+        <tr>
+            <td style="border: 1px solid black; padding: 8px;">Tác động của lỗ hổng</td>
+            <td style="border: 1px solid black; padding: 8px;">KCó thể download được source code rồi dẫn đến các tấn
+                công khác</td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid black; padding: 8px;">Domain/Url</td>
+            <td style="border: 1px solid black; padding: 8px;">https://testvul.com/.git/config</td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid black; padding: 8px;">References</td>
+            <td style="border: 1px solid black; padding: 8px;">CWE-527: Exposure of Version-Control Repository to an
+                Unauthorized Control Sphere</td>
+        </tr>
+    </table>
+    <p> <b>POC:</b> <br>1. Truy cập vào https://testvul.com/.git.config <br> 2. Request: </p>
+
+    <h2>4.3 Reflected XSS </h2>
+    <table style="width: 100%; border-collapse: collapse; border: 1px solid black;">
+        <tr>
+            <td style="border: 1px solid black; padding: 8px;">Mô tả</td>
+            <td style="border: 1px solid black; padding: 8px;">Lỗi Reflected XSS xảy ra ở chức năng upload ảnh, cho phép
+                attacker thực thi mã javascript trên máy nạn nhân.</td>
+
+        </tr>
+        <tr>
+            <td style="border: 1px solid black; padding: 8px;">Tác động của lỗ hổng</td>
+            <td style="border: 1px solid black; padding: 8px;">Khi người dùng nhập payload vào cookie thì trình duyệt sẽ
+                load trang web và thực thi các đoạn script kèm theo, sau đó gửi về cho attacker những thông tin của nạn
+                nhân..</td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid black; padding: 8px;">Domain/Url</td>
+            <td style="border: 1px solid black; padding: 8px;">https://testvul.com</td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid black; padding: 8px;">References</td>
+            <td style="border: 1px solid black; padding: 8px;">CWE-79 - Improper Neutralization of Input During Web Page
+                Generation ('Cross-site Scripting')</td>
+        </tr>
+
+    </table>
+    <p> <b>POC:</b> <br>1. Truy cập vào https://testvul.com <br> 2. Request: </p>
+
+    <h1>5 Chú Thích</h1>
+    <table style="border-collapse: collapse;">
+        <thead>
+            <tr>
+                <tr>
+                    <th style="border: 1px solid black; padding: 8px;">Từ viết tắt</th>
+                    <th style="border: 1px solid black; padding: 8px;">Mô tả</th>
+                </tr>
+            </tr>
+        </thead>
+        <tbody>
+            
+            <tr>
+                <tr>
+                    <td style="border: 1px solid black; padding: 8px;">2FA</td>
+                    <td style="border: 1px solid black; padding: 8px;">Two Factor Authentication</td>
+                </tr>
+            <tr>
+                <tr>
+                    <td style="border: 1px solid black; padding: 8px;">API</td>
+                    <td style="border: 1px solid black; padding: 8px;">Application Programming Interface</td>
+                </tr>
+            </tr>
+            <tr>
+                <tr>
+                    <td style="border: 1px solid black; padding: 8px;">C2</td>
+                    <td style="border: 1px solid black; padding: 8px;">Command and Control</td>
+                </tr>
+            </tr>
+            <tr>
+                <tr>
+                    <td style="border: 1px solid black; padding: 8px;">CSRF</td>
+                    <td style="border: 1px solid black; padding: 8px;">Cross Site Request Forgery</td>
+                </tr>
+            </tr>
+            <tr>
+                <tr>
+                    <td style="border: 1px solid black; padding: 8px;">DLP</td>
+                    <td style="border: 1px solid black; padding: 8px;">Data Loss Prevention</td>
+                </tr>
+            </tr>
+            <tr>
+                <tr>
+                    <td style="border: 1px solid black; padding: 8px;">IDS</td>
+                    <td style="border: 1px solid black; padding: 8px;">Intrusion Detection System</td>
+                </tr>
+            </tr>
+            <tr><tr>
+                <td style="border: 1px solid black; padding: 8px;">IPS</td>
+                <td style="border: 1px solid black; padding: 8px;">Intrusion Prevention System</td>
+            </tr>
+            </tr>
+            <tr>
+                <tr>
+                    <td style="border: 1px solid black; padding: 8px;">JS</td>
+                    <td style="border: 1px solid black; padding: 8px;">JavaScript </td>
+                </tr>
+            </tr>
+            <tr>
+                <tr>
+                    <td style="border: 1px solid black; padding: 8px;">OSINT</td>
+                    <td style="border: 1px solid black; padding: 8px;">Open Source Threat Intelligence</td>
+                </tr>
+            </tr>
+            <tr>
+                <tr>
+                    <td style="border: 1px solid black; padding: 8px;">OWASP</td>
+                    <td style="border: 1px solid black; padding: 8px;">Open Web Application Security Project/td>
+                </tr>
+            </tr>
+            <tr>
+                <tr>
+                    <td style="border: 1px solid black; padding: 8px;">SDLC</td>
+                    <td style="border: 1px solid black; padding: 8px;">Software Development Life Cycle</td>
+                </tr>
+            </tr>
+            <tr>
+                <tr>
+                    <td style="border: 1px solid black; padding: 8px;">SIEM</td>
+                    <td style="border: 1px solid black; padding: 8px;">Security Information and Event Management</td>
+                </tr>
+            </tr>
+            <tr>
+                <tr>
+                    <td style="border: 1px solid black; padding: 8px;">SOC</td>
+                    <td style="border: 1px solid black; padding: 8px;">Security Operation Center</td>
+                </tr>
+            </tr>
+            <tr>
+                <tr>
+                    <td style="border: 1px solid black; padding: 8px;">SQLi</td>
+                    <td style="border: 1px solid black; padding: 8px;">SQL Injection</td>
+                </tr>
+            </tr>
+            <tr>
+                <tr>
+                    <td style="border: 1px solid black; padding: 8px;">WAF</td>
+                    <td style="border: 1px solid black; padding: 8px;">Web Application Firewall</td>
+                </tr>
+            </tr>
+            <tr>
+                <tr>
+                    <td style="border: 1px solid black; padding: 8px;">XSS</td>
+                    <td style="border: 1px solid black; padding: 8px;">Cross Site Scripting</td>
+                </tr>
+            </tr>
+            <tr>
+                <tr>
+                    <td style="border: 1px solid black; padding: 8px;">XML</td>
+                    <td style="border: 1px solid black; padding: 8px;">XML External Entities</td>
+                </tr>
+            </tr>
+        </tbody>
+    </table>
+ 
+
+</body>
+
+</html>

@@ -185,7 +185,7 @@ const columns: TableColumnDefinition<Scan>[] = [
       const button = <Button icon={<OpenRegular />} onClick={() => setOpen(true)}>Open</Button>;
       const title = "Scan Result"
       const children = <ScanDetailView result={item.result} status={item.status} log={item.log} />
-      const action = <Button appearance="primary" icon={<PrintRegular />}>
+      const action = <Button appearance="primary" icon={<PrintRegular />} value="Print Div Contents" id="btnPrint">
         In ra PDF
       </Button>
       return <DialogComponent
@@ -233,9 +233,9 @@ const columns: TableColumnDefinition<Scan>[] = [
       const button = <Button aria-label="Xuất báo cáo" icon={<ArrowExportRegular />} onClick={() => setOpen(true)} >Report</Button>
       const title = `Xuất Báo Cáo`;
       const [open, setOpen] = useState<boolean>(false)
-      const children = <ReportView result={item.result} />;
+      const children = <ReportView result={item.result} targets={item.targets} />;
       const action = (
-        <Button appearance="primary" icon={<PrintRegular />}>
+        <Button appearance="primary" icon={<PrintRegular />} value="Print Div Contents" id="btnPrint">
           In ra PDF
         </Button>
 
