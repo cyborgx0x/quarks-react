@@ -8,6 +8,7 @@ export default function TemplateInfoCard({ templateInfo }: { templateInfo: Templ
         template,
         'template-url': templateUrl,
         'template-id': templateId,
+        recommendation,
         info: {
             name,
             author,
@@ -55,6 +56,11 @@ export default function TemplateInfoCard({ templateInfo }: { templateInfo: Templ
                     <ListItem>
                         <ListItemText primary="Description" secondary={description} />
                     </ListItem>
+                    {recommendation &&
+                        <ListItem>
+                            <ListItemText primary="Khuyến nghị" secondary={recommendation} />
+                        </ListItem>
+                    }
                     {reference &&
 
                         <ListItem>

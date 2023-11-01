@@ -133,6 +133,7 @@ export type TemplateInfo = {
   "template-url": string;
   "template-id": string;
   "template-path": string;
+  recommendation?: string;
   info: {
     name: string;
     author: string[];
