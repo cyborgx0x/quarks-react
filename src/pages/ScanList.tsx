@@ -127,11 +127,11 @@ const columns: TableColumnDefinition<Scan>[] = [
     renderCell: (item) => {
       return (
         <div style={{}}>
-          {item.profile.name &&
+          {item.profile &&
             <Body1Stronger>{item.profile.name}</Body1Stronger>
           }
           <Divider />
-          {item.profile.desc &&
+          {item.profile &&
 
             <Text>{item.profile.desc}</Text>
           }
