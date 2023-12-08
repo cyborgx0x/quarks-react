@@ -3,8 +3,8 @@ services:
     entrypoint:
     - sleep
     - infinity
-    image: calssiq/eportal:node-env
-    init: true
+    image: calssiq/eportal:env-js-node18
+    init: false
     volumes:
     - type: bind
       source: /var/run/docker.sock

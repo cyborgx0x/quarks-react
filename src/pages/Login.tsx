@@ -72,36 +72,46 @@ export const LoginView = () => {
         });
     }
   };
+  const handleKeydown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleLogin();
+    }
+  }
   return (
-    <div className={styles.root}>
-      <div>
-        <Label htmlFor={beforeId}>Full name</Label>
-        <Input
-          // contentBefore={<PersonRegular />}
-          id={beforeId}
-          type="text"
-          onChange={(e) =>
-            setLoginData({ ...loginData, username: e.target.value })
-          }
-          value={loginData.username}
-        />
-        <Body1>Your username that you register with our system</Body1>
-      </div>
+    <div style={{ display: "grid", justifyContent: "center" }}>
 
-      <div>
-        <Label htmlFor={afterId}>Password</Label>
-        <Input
-          type="password"
-          contentAfter={<EyeIcon aria-label="Enter by voice" />}
-          id={afterId}
-          value={loginData.password}
-          onChange={(e) =>
-            setLoginData({ ...loginData, password: e.target.value })
-          }
-        />
-        <Body1>Do not let anyone see your input</Body1>
+      <div className={styles.root}>
+        <div>
+          <Label htmlFor={beforeId}>Username</Label>
+          <Input
+            // contentBefore={<PersonRegular />}
+            id={beforeId}
+            type="text"
+            onChange={(e) =>
+              setLoginData({ ...loginData, username: e.target.value })
+            }
+            value={loginData.username}
+            onKeyDown={handleKeydown}
+          />
+
+        </div>
+
+        <div>
+          <Label htmlFor={afterId}>Password</Label>
+          <Input
+            type="password"
+            contentAfter={<EyeIcon aria-label="Enter by voice" />}
+            id={afterId}
+            value={loginData.password}
+            onChange={(e) =>
+              setLoginData({ ...loginData, password: e.target.value })
+            }
+            onKeyDown={handleKeydown}
+          />
+          <Body1>Do not let anyone see your input</Body1>
+        </div>
+        <Button onClick={handleLogin}>Login</Button>
       </div>
-      <Button onClick={handleLogin}>Login</Button>
     </div>
   );
 };

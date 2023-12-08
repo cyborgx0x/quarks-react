@@ -451,22 +451,22 @@ export default function ScanList(): ReactElement {
   const button = (<Button icon={<MoreCircleRegular />} appearance="secondary" onClick={() => setOpen(true)}>
     Quét nâng cao
   </Button>)
-  // const columnSizingOptions = {
-  //   id: {
-  //     minWidth: 40,
-  //     defaultWidth: 80,
-  //   },
-  //   profile: {
-  //     defaultWidth: 180,
-  //     minWidth: 120,
+  const columnSizingOptions = {
+    id: {
+      minWidth: 40,
+      defaultWidth: 80,
+    },
+    profile: {
+      defaultWidth: 180,
+      minWidth: 120,
 
-  //   },
-  //   targets: {
-  //     defaultWidth: 180,
-  //     minWidth: 120,
+    },
+    targets: {
+      defaultWidth: 320,
+      minWidth: 240,
 
-  //   },
-  // };
+    },
+  };
   return (
     <div className={styles.root}>
       <div
@@ -521,8 +521,8 @@ export default function ScanList(): ReactElement {
           items={items}
           columns={columns}
           focusMode="composite"
-        // resizableColumns
-        // columnSizingOptions={columnSizingOptions}
+          resizableColumns
+          columnSizingOptions={columnSizingOptions}
         >
           <DataGridHeader>
             <DataGridRow>
