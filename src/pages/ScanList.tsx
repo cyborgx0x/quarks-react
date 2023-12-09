@@ -467,7 +467,7 @@ export default function ScanList(): ReactElement {
           alignContent="center"
           className={styles.customLineStyle}
         >
-          <CardScan target={targetList[0].id} />
+          <CardScan target={targetList.pop()?.id} />
         </Divider>
       </div>
       <div

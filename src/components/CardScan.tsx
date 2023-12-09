@@ -57,7 +57,7 @@ const useStyles = makeStyles({
 
 
 export default function CardScan(
-    { target }: { target: number }
+    { target }: { target: number | undefined }
 ): React.ReactElement {
     const styles = useStyles();
     const handleScan = () => {
@@ -81,9 +81,9 @@ export default function CardScan(
             <section className={styles.section}>
                 <Card className={styles.card}>
                     <CardHeader
-                        header={<Text weight="semibold">Profile: 2023 CVEs</Text>}
+                        header={<Text weight="semibold">Profile: Mặc định</Text>}
                         description={
-                            <Caption1 className={styles.caption}>Tạo bởi bạn</Caption1>
+                            <Caption1 className={styles.caption}>Tạo bởi hệ thống</Caption1>
                         }
                         action={
                             <Button
@@ -95,7 +95,8 @@ export default function CardScan(
                     />
 
                     <p className={styles.text}>
-                        Quét với toàn bộ các CVE mới phát hiện năm 2023
+                        Quét Target mới nhất
+                        Để tùy chỉnh, vui lòng tạo Profile quét mới và quét nâng cao
                     </p>
                     <Button icon={<ScanObjectRegular />} appearance="primary" onClick={handleScan}>Thực hiện quét</Button>
                 </Card>
