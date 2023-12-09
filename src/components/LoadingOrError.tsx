@@ -13,7 +13,7 @@ export default function LoadingOrError({ error }: Properties): ReactElement {
 					{error ? (
 						error.message
 					) : (
-						<Box sx={{ display: 'flex' }}>
+						<Box sx={{ display: 'grid', placeItems: 'center', height: '100vh' }}>
 							<CircularProgress />
 						</Box>
 					)}
