@@ -109,7 +109,10 @@ const columns: TableColumnDefinition<Scan>[] = [
         return "Hoàn thành"
       }
       else if (item.status === 4) {
-        return "Lỗi"
+        if (item.error) {
+          return `Lỗi item ${item.error.substring(0, 100)}`
+        }
+        return `Lỗi không xác định`
       }
       else {
         return <>
