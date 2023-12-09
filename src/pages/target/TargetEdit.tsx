@@ -1,4 +1,4 @@
-import { ReactElement } from "react";
+import { ReactElement, useState } from "react";
 import { LinkRegular, OrganizationRegular } from "@fluentui/react-icons";
 
 import {
@@ -21,7 +21,9 @@ const useStyles = makeStyles({
   },
 });
 
-export default function TargetEdit({ item }: { item: Target }): ReactElement {
+export default function TargetEdit({ url, org , setUrl, setOrg}: { 
+  url: string, org: string, setUrl: React.Dispatch<React.SetStateAction<string>>, setOrg: React.Dispatch<React.SetStateAction<string>>
+ }): ReactElement {
   const targetURL = useId("target-url");
   const targetOrg = useId("target-org");
   const classes = useStyles();
@@ -33,7 +35,10 @@ export default function TargetEdit({ item }: { item: Target }): ReactElement {
         contentBefore={<LinkRegular />}
         id={targetURL}
         placeholder="example.com"
-        value={item.url}
+        value={url}
+        onChange={(e) => {
+          setUrl(e.target.value);
+        }}
       />
       <Body1>
         Input the URL target, example: <code>example.com</code>.
@@ -43,7 +48,10 @@ export default function TargetEdit({ item }: { item: Target }): ReactElement {
         contentBefore={<OrganizationRegular />}
         id={targetOrg}
         placeholder="Some Organization"
-        value={item.org}
+        value={org}
+        onChange={(e) => {
+          setOrg(e.target.value);
+        }}
       />
     </div>
   );

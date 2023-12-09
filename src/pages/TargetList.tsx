@@ -40,17 +40,17 @@ const columns: TableColumnDefinition<Target>[] = [
       return item.url;
     },
   }),
-  createTableColumn<Target>({
-    columnId: "last_scan",
-    renderHeaderCell: () => {
-      return "Lần cuối quét";
-    },
-    renderCell: (item) => {
-      const date = new Date(item.last_scan);
-      const formattedDate = date.toLocaleString();
-      return formattedDate;
-    },
-  }),
+  // createTableColumn<Target>({
+  //   columnId: "last_scan",
+  //   renderHeaderCell: () => {
+  //     return "Lần cuối quét";
+  //   },
+  //   renderCell: (item) => {
+  //     const date = new Date(item.last_scan);
+  //     const formattedDate = date.toLocaleString();
+  //     return formattedDate;
+  //   },
+  // }),
   createTableColumn<Target>({
     columnId: "org",
     renderHeaderCell: () => {
@@ -106,17 +106,14 @@ const columns: TableColumnDefinition<Target>[] = [
     },
     renderCell: (item): ReactElement => {
       const sendDelete = () => {
-        const token = localStorage.getItem("access_token");
+
         const url = `/api/user/targets/${item.id}`;
 
         const config = {
           method: 'delete',
           maxBodyLength: Infinity,
           url: url,
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
+
         };
 
         axiosInstance.request(config)
@@ -134,9 +131,40 @@ const columns: TableColumnDefinition<Target>[] = [
       const [open, setOpen] = useState<boolean>(false)
       const editButton = <Button icon={<EditRegular />} onClick={() => setOpen(true)}>Edit</Button>;
       const editTitle = `Chỉnh sửa`;
-      const editChildren = <TargetEdit item={item} />;
+      const [url, setUrl] = useState(item.url || "");
+      const [org, setOrg] = useState(item.org || "");
+      const editChildren = <TargetEdit
+        url={url}
+        setUrl={setUrl}
+        org={org}
+        setOrg={setOrg}
+      />;
+      const sendEdit = () => {
+
+        const url = `/api/user/targets/${item.id}/`;
+        const data = {
+          url: url,
+          org: org
+        };
+        const config = {
+          method: 'put',
+          maxBodyLength: Infinity,
+          url: url,
+          data: data
+        };
+        axiosInstance.request(config)
+          .then((response) => {
+            setOpen(false);
+            window.location.reload();
+            console.log(JSON.stringify(response.data));
+          })
+          .catch((error) => {
+            setOpen(false);
+            console.log(error);
+          });
+      }
       const editAction = (
-        <Button appearance="primary" icon={<SaveRegular />} >
+        <Button appearance="primary" icon={<SaveRegular />} onClick={() => sendEdit()} >
           Save
         </Button>
       );
@@ -182,14 +210,9 @@ export default function TargetList(): ReactElement {
   const [items, setItems] = useState<Target[]>([]);
 
   const getData = (): void => {
-    const token = localStorage.getItem("access_token");
     const url = '/api/user/targets/';
 
-    axiosInstance.get(url, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    axiosInstance.get(url)
       .then((response: { data: APIResponse }) => {
         setItems(response.data.results as Target[]);
       })
@@ -217,19 +240,12 @@ export default function TargetList(): ReactElement {
   const createTitle = `Tạo mục tiêu`;
   const createChildren = <TargetCreate setOrg={setOrg} setURL={setURL} />;
   const onClick = () => {
-    const token = localStorage.getItem("access_token");
-    const data = JSON.stringify({
-      url: URL,
-      org: Org
-    });
 
     const url = '/api/user/targets/';
 
-    axiosInstance.post(url, data, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
+    axiosInstance.post(url, {
+      url: URL,
+      org: Org
     })
       .then((response) => {
         setOpen(false);

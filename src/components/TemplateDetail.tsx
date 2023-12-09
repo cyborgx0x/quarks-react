@@ -67,14 +67,10 @@ const columns: TableColumnDefinition<Template>[] = [
 export const CompositeNavigation = () => {
     const [items, setItems] = useState<Template[]>([]);
     const getData = (): void => {
-        const token = localStorage.getItem("access_token");
+       
         const url = '/api/user/templates/';
       
-        axiosInstance.get(url, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
+        axiosInstance.get(url)
           .then((response) => {
             setItems(response.data.results);
           })

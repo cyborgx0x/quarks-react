@@ -139,17 +139,12 @@ const columns: TableColumnDefinition<Template>[] = [
       const editButton = <Button icon={<EditRegular />} onClick={() => setOpen(true)}>Edit</Button>;
       const editChildren = <TemplateEdit item={item} updateState={setUpdateTemplate} />;
       const onClick = () => {
-        const token = localStorage.getItem("access_token");
+
         const data = JSON.stringify(updateTemplate);
 
         const url = `/api/user/templates/${item.id}/`;
 
-        axiosInstance.put(url, data, {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
-        })
+        axiosInstance.put(url, data)
           .then((response) => {
             console.log(JSON.stringify(response.data));
           })
@@ -178,16 +173,12 @@ const columns: TableColumnDefinition<Template>[] = [
         />
       );
       const sendDelete = () => {
-        const token = localStorage.getItem("access_token");
+
         const url = `/api/user/templates/${item.id}`;
         const config = {
           method: 'delete',
           maxBodyLength: Infinity,
           url: url,
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
         };
 
         axiosInstance.request(config)
@@ -234,14 +225,9 @@ export default function TemplateList(): ReactElement {
   const [items, setItems] = useState<Template[]>([]);
   const [open, setOpen] = useState<boolean>(false)
   const getData = (): void => {
-    const token = localStorage.getItem("access_token");
     const url = '/api/user/templates/';
 
-    axiosInstance.get(url, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    axiosInstance.get(url)
       .then((response: { data: APIResponse }) => {
         setItems(response.data.results as Template[]);
       })

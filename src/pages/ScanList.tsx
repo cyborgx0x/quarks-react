@@ -20,7 +20,7 @@ import {
   Spinner
 } from "@fluentui/react-components";
 import { ReactElement, useEffect, useState } from "react";
-import { APIResponse,  Scan, ScanProfile, Target } from "../type";
+import { APIResponse, Scan, ScanProfile, Target } from "../type";
 
 
 import axiosInstance from '../axiosConfig';
@@ -216,8 +216,6 @@ const columns: TableColumnDefinition<Scan>[] = [
     },
     renderCell: (item) => {
       const sendDelete = () => {
-        const token = localStorage.getItem("access_token");
-
 
         const url = `/api/user/scans/${item.id}`;
 
@@ -225,10 +223,7 @@ const columns: TableColumnDefinition<Scan>[] = [
           method: 'delete',
           maxBodyLength: Infinity,
           url: url,
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
+
         };
 
         axiosInstance.request(config)
@@ -243,7 +238,7 @@ const columns: TableColumnDefinition<Scan>[] = [
           });
       };
 
-      const button = <Button aria-label="Xuất báo cáo" icon={<ArrowExportRegular />} onClick={() => setOpen(true)} >Report</Button>
+      const button = <Button aria-label="Xuất báo cáo" icon={<ArrowExportRegular />} onClick={() => setOpen(true)} disabled={!item.result}>Report</Button>
       const title = `Xuất Báo Cáo`;
       const [open, setOpen] = useState<boolean>(false)
       const children = <ReportView result={item.result} targets={item.targets} />;
@@ -309,16 +304,10 @@ export default function ScanList(): ReactElement {
   const selectTarget = useId('multi-target');
   const selectProfile = useId();
 
-
-  const token = localStorage.getItem("access_token");
   const url = '/api/user/scans/';
 
   const getData = (): void => {
-    axiosInstance.get(url, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    axiosInstance.get(url)
       .then((response: { data: APIResponse }) => {
         setItems(response.data.results as Scan[]);
       })
@@ -330,14 +319,9 @@ export default function ScanList(): ReactElement {
   // const { data, error } = useQuery({ queryKey: ['scans'], queryFn: getData, refetchInterval: 5000 })
   // console.log(data, error)
   const getTarget = (): void => {
-    const token = localStorage.getItem("access_token");
     const url = '/api/user/targets/';
 
-    axiosInstance.get(url, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    axiosInstance.get(url)
       .then((response: { data: APIResponse }) => {
         setTargetList(response.data.results as Target[]);
       })
@@ -347,14 +331,10 @@ export default function ScanList(): ReactElement {
   };
 
   const getProfile = (): void => {
-    const token = localStorage.getItem("access_token");
+
     const url = '/api/user/scan_profiles/';
 
-    axiosInstance.get(url, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    axiosInstance.get(url)
       .then((response: { data: APIResponse }) => {
         setProfileList(response.data.results as ScanProfile[]);
       })
@@ -422,19 +402,11 @@ export default function ScanList(): ReactElement {
 
   );
   const handleAdvanceScan = () => {
-    const token = localStorage.getItem("access_token");
-    const data = JSON.stringify({
-      profile: profile,
-      targets: target.map(item => parseInt(item))
-    });
-
     const url = '/api/user/scans/';
 
-    axiosInstance.post(url, data, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
+    axiosInstance.post(url, {
+      profile: profile,
+      targets: target.map(item => parseInt(item))
     })
       .then((response) => {
         setOpen(false);

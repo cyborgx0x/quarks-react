@@ -33,7 +33,7 @@ export interface ScanProfile {
   desc: string;
   filter: object;
   output: object;
-  configuration: {
+  configuration?: {
     follow_redirects?: string;
     "-H"?: string[];
     "-a"?: string[];

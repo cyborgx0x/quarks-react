@@ -53,6 +53,22 @@ const columns: TableColumnDefinition<ScanProfile>[] = [
     },
   }),
   createTableColumn<ScanProfile>({
+    columnId: "header",
+    renderHeaderCell: () => {
+      return "Custom Header";
+    },
+    renderCell: (item) => {
+      return <div>
+        {item.configuration &&
+          item.configuration["-H"] &&
+          <>
+            {item.configuration["-H"].map(item => <div key={Math.random()}>{item}</div>)}
+          </>
+        }
+      </div>
+    },
+  }),
+  createTableColumn<ScanProfile>({
     columnId: "Option",
     renderHeaderCell: () => {
       return "Scan Option";
@@ -122,22 +138,7 @@ const columns: TableColumnDefinition<ScanProfile>[] = [
     },
   }),
 
-  createTableColumn<ScanProfile>({
-    columnId: "header",
-    renderHeaderCell: () => {
-      return "Custom Header";
-    },
-    renderCell: (item) => {
-      return <div>
-        {item.configuration &&
-          item.configuration["-H"] &&
-          <>
-            {item.configuration["-H"].map(item => <div key={Math.random()}>{item}</div>)}
-          </>
-        }
-      </div>
-    },
-  }),
+
   createTableColumn<ScanProfile>({
     columnId: "lastUpdated",
     renderHeaderCell: () => {
@@ -187,9 +188,47 @@ const columns: TableColumnDefinition<ScanProfile>[] = [
       const [open2, setOpen2] = useState<boolean>(false)
       const editButton = <Button icon={<EditRegular />} onClick={() => setOpen(true)}>Edit</Button>;
       const editTitle = `Chỉnh sửa`;
-      const editChildren = <ProfileEdit item={item} />;
+      const [profileName, setProfileName] = useState<string>(item.name)
+      const [profileDesc, setProfileDesc] = useState<string>(item.desc)
+      const [header, setHeader] = useState<string[] | undefined>(item.configuration && item.configuration["-H"] || [])
+      const [authorFilter, setAuthorFilter] = useState<string[] | undefined>(item.configuration && item.configuration["-a"] || [])
+      const [tagFilter, setTagFilter] = useState<string[] | undefined>(item.configuration && item.configuration["-tags"] || [])
+      const [idFilter, setIdFilter] = useState<string[] | undefined>(item.configuration && item.configuration["-id"] || [])
+
+      const editChildren = <ProfileEdit profileName={profileName} profileDesc={profileDesc} header={header} authorFilter={authorFilter} tagFilter={tagFilter} idFilter={idFilter}
+        setProfileName={setProfileName} setProfileDesc={setProfileDesc} setHeader={setHeader} setAuthorFilter={setAuthorFilter} setTagFilter={setTagFilter} setIdFilter={setIdFilter}
+      />;
+      const handleSaving = () => {
+        const url = `/api/user/scan_profiles/${item.id}/`;
+        const config = {
+          method: 'put',
+          maxBodyLength: Infinity,
+          url: url,
+          data: {
+            name: profileName,
+            desc: profileDesc,
+            configuration: {
+              "-H": header,
+              "-a": authorFilter,
+              "-tags": tagFilter,
+              "-id": idFilter
+            }
+          }
+        };
+
+        axiosInstance.request(config)
+          .then((response) => {
+            setOpen(false);
+            window.location.reload();
+            console.log(JSON.stringify(response.data));
+          })
+          .catch((error) => {
+            setOpen(false);
+            console.log(error);
+          });
+      }
       const editAction = (
-        <Button appearance="primary" icon={<SaveRegular />}>
+        <Button appearance="primary" icon={<SaveRegular />} onClick={handleSaving}>
           Save
         </Button>
       );
@@ -204,19 +243,12 @@ const columns: TableColumnDefinition<ScanProfile>[] = [
         />
       );
       const sendDelete = () => {
-        const token = localStorage.getItem("access_token");
-
-
         const url = `/api/user/scan_profiles/${item.id}`;
 
         const config = {
           method: 'delete',
           maxBodyLength: Infinity,
           url: url,
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
         };
 
         axiosInstance.request(config)
@@ -262,17 +294,11 @@ const columns: TableColumnDefinition<ScanProfile>[] = [
 export default function ScanProfiles() {
   const [items, setItems] = useState<ScanProfile[]>([]);
   const getData = (): void => {
-    const token = localStorage.getItem("access_token");
     const url = '/api/user/scan_profiles/';
 
-    axiosInstance.get(url, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+    axiosInstance.get(url).then((response: { data: APIResponse }) => {
+      setItems(response.data.results as ScanProfile[]);
     })
-      .then((response: { data: APIResponse }) => {
-        setItems(response.data.results as ScanProfile[]);
-      })
       .catch((error: { error: ScanProfile }) => {
         console.log(error);
       });
@@ -309,19 +335,13 @@ export default function ScanProfiles() {
   );
   const createTitle = `Tạo Profile mới`;
   const handleCreateScanProfile = () => {
-    const token = localStorage.getItem("access_token");
+
     const oridata: ScanProfile = { ...newProfile, configuration: { "-H": header, "-a": authorFilter, "-id": idFilter, "-tags": tagFilter } };
-    const data = JSON.stringify(oridata);
-    console.log(data);
 
     const url = '/api/user/scan_profiles/';
 
-    axiosInstance.post(url, data, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-    })
+    axiosInstance.post(url, oridata
+    )
       .then((response) => {
         setOpen(false);
         getData(); // Assuming getData is a function to fetch updated data
