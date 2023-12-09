@@ -20,8 +20,11 @@ import {
   Spinner
 } from "@fluentui/react-components";
 import { ReactElement, useEffect, useState } from "react";
-import { APIResponse, AxiosConfig, Scan, ScanProfile, Target } from "../type";
-import axios from "axios";
+import { APIResponse,  Scan, ScanProfile, Target } from "../type";
+
+
+import axiosInstance from '../axiosConfig';
+
 import {
   DeleteRegular,
   OpenRegular,
@@ -213,31 +216,33 @@ const columns: TableColumnDefinition<Scan>[] = [
     },
     renderCell: (item) => {
       const sendDelete = () => {
-        const token = localStorage.getItem("access_token")
+        const token = localStorage.getItem("access_token");
 
 
+        const url = `/api/user/scans/${item.id}`;
 
         const config = {
           method: 'delete',
           maxBodyLength: Infinity,
-          url: `http://localhost:8000/api/user/scans/${item.id}`,
+          url: url,
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
           },
         };
 
-        axios.request(config)
+        axiosInstance.request(config)
           .then((response) => {
-            setOpen(false)
-            window.location.reload()
+            setOpen(false);
+            window.location.reload();
             console.log(JSON.stringify(response.data));
           })
           .catch((error) => {
-            setOpen(false)
+            setOpen(false);
             console.log(error);
           });
-      }
+      };
+
       const button = <Button aria-label="Xuất báo cáo" icon={<ArrowExportRegular />} onClick={() => setOpen(true)} >Report</Button>
       const title = `Xuất Báo Cáo`;
       const [open, setOpen] = useState<boolean>(false)
@@ -306,17 +311,14 @@ export default function ScanList(): ReactElement {
 
 
   const token = localStorage.getItem("access_token");
-  const config: AxiosConfig = {
-    method: "get",
-    maxBodyLength: Infinity,
-    url: `${import.meta.env.VITE_HOST_URL}/api/user/scans/`,
+  const url = '/api/user/scans/';
 
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
   const getData = (): void => {
-    axios(config)
+    axiosInstance.get(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then((response: { data: APIResponse }) => {
         setItems(response.data.results as Scan[]);
       })
@@ -324,19 +326,18 @@ export default function ScanList(): ReactElement {
         console.log(error);
       });
   };
+
   // const { data, error } = useQuery({ queryKey: ['scans'], queryFn: getData, refetchInterval: 5000 })
   // console.log(data, error)
-  const targetConfig: AxiosConfig = {
-    method: "get",
-    maxBodyLength: Infinity,
-    url: `${import.meta.env.VITE_HOST_URL}/api/user/targets/`,
-
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
   const getTarget = (): void => {
-    axios(targetConfig)
+    const token = localStorage.getItem("access_token");
+    const url = '/api/user/targets/';
+
+    axiosInstance.get(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then((response: { data: APIResponse }) => {
         setTargetList(response.data.results as Target[]);
       })
@@ -344,17 +345,16 @@ export default function ScanList(): ReactElement {
         console.log(error);
       });
   };
-  const profileConfig: AxiosConfig = {
-    method: "get",
-    maxBodyLength: Infinity,
-    url: `${import.meta.env.VITE_HOST_URL}/api/user/scan_profiles/`,
 
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
   const getProfile = (): void => {
-    axios(profileConfig)
+    const token = localStorage.getItem("access_token");
+    const url = '/api/user/scan_profiles/';
+
+    axiosInstance.get(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then((response: { data: APIResponse }) => {
         setProfileList(response.data.results as ScanProfile[]);
       })
@@ -362,7 +362,13 @@ export default function ScanList(): ReactElement {
         console.log(error);
       });
   };
-  useEffect(() => { getData(); getTarget(); getProfile() }, []);
+
+  useEffect(() => {
+    getData();
+    getTarget();
+    getProfile();
+  }, []);
+
 
 
 
@@ -416,36 +422,31 @@ export default function ScanList(): ReactElement {
 
   );
   const handleAdvanceScan = () => {
-    const token = localStorage.getItem("access_token")
-
+    const token = localStorage.getItem("access_token");
     const data = JSON.stringify({
       profile: profile,
       targets: target.map(item => parseInt(item))
     });
 
-    const config = {
-      method: 'post',
-      maxBodyLength: Infinity,
-      url: `http://localhost:8000/api/user/scans/`,
+    const url = '/api/user/scans/';
+
+    axiosInstance.post(url, data, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
-      data: data
-    };
-
-    axios.request(config)
+    })
       .then((response) => {
-        setOpen(false)
-        getData()
+        setOpen(false);
+        getData();
         console.log(JSON.stringify(response.data));
       })
       .catch((error) => {
-        setOpen(false)
+        setOpen(false);
         console.log(error);
       });
+  };
 
-  }
   const action = (
     <Button appearance="primary" icon={<ScanRegular />} onClick={() => handleAdvanceScan()}>
       Bắt đầu quét

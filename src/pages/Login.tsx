@@ -1,5 +1,5 @@
 import * as React from "react";
-import axios, { AxiosRequestConfig } from "axios";
+
 import {
   makeStyles,
   shorthands,
@@ -13,6 +13,9 @@ import {
 import type { ButtonProps } from "@fluentui/react-components";
 import { LoginData } from "../type";
 import { useNavigate } from "react-router-dom";
+
+import axiosInstance from '../axiosConfig';
+
 const useStyles = makeStyles({
   root: {
     display: "flex",
@@ -52,26 +55,17 @@ export const LoginView = () => {
   const afterId = useId("content-after");
 
   const handleLogin = () => {
-    const config: AxiosRequestConfig = {
-      method: "post",
-      maxBodyLength: Infinity,
-      url: `${import.meta.env.VITE_HOST_URL}/api/token/`,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-    if (config.url) {
-      axios
-        .post(config.url, loginData)
-        .then((response) => {
-          localStorage.setItem("access_token", response.data.access);
-          navigate("/templates");
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
+    const url = '/api/token/';
+    axiosInstance.post(url, loginData)
+      .then((response) => {
+        localStorage.setItem("access_token", response.data.access);
+        navigate("/templates");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
+  
   const handleKeydown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       handleLogin();

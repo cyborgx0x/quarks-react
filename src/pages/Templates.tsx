@@ -12,8 +12,7 @@ import {
   Body1Strong,
   SplitButton,
 } from "@fluentui/react-components";
-import { AxiosConfig, Template, APIResponse } from "../type";
-import axios from "axios";
+import { Template, APIResponse } from "../type";
 import { ReactElement, useEffect, useState } from "react";
 import {
   DeleteRegular,
@@ -28,6 +27,7 @@ import DialogComponent from "../components/DialogRegular";
 import TemplateDetail from "./template/TemplateDetail";
 import TemplateEdit from "./template/TemplateEdit";
 import TemplateCreate from "./template/TemplateCreate";
+import axiosInstance from "../axiosConfig";
 
 const columns: TableColumnDefinition<Template>[] = [
   createTableColumn<Template>({
@@ -139,30 +139,25 @@ const columns: TableColumnDefinition<Template>[] = [
       const editButton = <Button icon={<EditRegular />} onClick={() => setOpen(true)}>Edit</Button>;
       const editChildren = <TemplateEdit item={item} updateState={setUpdateTemplate} />;
       const onClick = () => {
-        const token = localStorage.getItem("access_token")
-
+        const token = localStorage.getItem("access_token");
         const data = JSON.stringify(updateTemplate);
 
-        const config = {
-          method: 'put',
-          maxBodyLength: Infinity,
-          url: `http://localhost:8000/api/user/templates/${item.id}/`,
+        const url = `/api/user/templates/${item.id}/`;
+
+        axiosInstance.put(url, data, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
           },
-          data: data
-        };
-
-        axios.request(config)
+        })
           .then((response) => {
             console.log(JSON.stringify(response.data));
           })
           .catch((error) => {
             console.log(error);
           });
-
       };
+
 
       const primaryActionButtonProps = {
         onClick,
@@ -183,28 +178,30 @@ const columns: TableColumnDefinition<Template>[] = [
         />
       );
       const sendDelete = () => {
-        const token = localStorage.getItem("access_token")
+        const token = localStorage.getItem("access_token");
+        const url = `/api/user/templates/${item.id}`;
         const config = {
           method: 'delete',
           maxBodyLength: Infinity,
-          url: `http://localhost:8000/api/user/templates/${item.id}`,
+          url: url,
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
           },
         };
 
-        axios.request(config)
+        axiosInstance.request(config)
           .then((response) => {
-            setOpen(false)
-            window.location.reload()
+            setOpen(false);
+            window.location.reload();
             console.log(JSON.stringify(response.data));
           })
           .catch((error) => {
-            setOpen(false)
+            setOpen(false);
             console.log(error);
           });
-      }
+      };
+
       const deleteButton = <Button icon={<DeleteRegular />} onClick={() => setOpen2(true)}>Xóa</Button>;
       const deleteTitle = `Thực hiện xóa?`;
       const deleteChildren = <>Bạn có muốn xóa {item.name} không?</>;
@@ -236,18 +233,15 @@ const columns: TableColumnDefinition<Template>[] = [
 export default function TemplateList(): ReactElement {
   const [items, setItems] = useState<Template[]>([]);
   const [open, setOpen] = useState<boolean>(false)
-  const token = localStorage.getItem("access_token");
-  const config: AxiosConfig = {
-    method: "get",
-    maxBodyLength: Infinity,
-    url: `${import.meta.env.VITE_HOST_URL}/api/user/templates/`,
-
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
   const getData = (): void => {
-    axios(config)
+    const token = localStorage.getItem("access_token");
+    const url = '/api/user/templates/';
+
+    axiosInstance.get(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then((response: { data: APIResponse }) => {
         setItems(response.data.results as Template[]);
       })
@@ -255,7 +249,9 @@ export default function TemplateList(): ReactElement {
         console.log(error);
       });
   };
+
   useEffect(() => getData(), []);
+
   const createButton = (
     <Button
       icon={<FormNewRegular />}

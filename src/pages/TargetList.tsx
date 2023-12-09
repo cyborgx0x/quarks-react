@@ -1,6 +1,7 @@
 import { ReactElement, useEffect, useState } from "react";
-import { APIResponse, AxiosConfig, Target } from "../type";
-import axios from "axios";
+import { APIResponse, Target } from "../type";
+
+import axiosInstance from '../axiosConfig';
 
 import {
   DataGrid,
@@ -105,28 +106,31 @@ const columns: TableColumnDefinition<Target>[] = [
     },
     renderCell: (item): ReactElement => {
       const sendDelete = () => {
-        const token = localStorage.getItem("access_token")
+        const token = localStorage.getItem("access_token");
+        const url = `/api/user/targets/${item.id}`;
+
         const config = {
           method: 'delete',
           maxBodyLength: Infinity,
-          url: `http://localhost:8000/api/user/targets/${item.id}`,
+          url: url,
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
           },
         };
 
-        axios.request(config)
+        axiosInstance.request(config)
           .then((response) => {
-            setOpen(false)
-            window.location.reload()
+            setOpen(false);
+            window.location.reload();
             console.log(JSON.stringify(response.data));
           })
           .catch((error) => {
-            setOpen(false)
+            setOpen(false);
             console.log(error);
           });
-      }
+      };
+
       const [open, setOpen] = useState<boolean>(false)
       const editButton = <Button icon={<EditRegular />} onClick={() => setOpen(true)}>Edit</Button>;
       const editTitle = `Chỉnh sửa`;
@@ -176,18 +180,16 @@ const columns: TableColumnDefinition<Target>[] = [
 ];
 export default function TargetList(): ReactElement {
   const [items, setItems] = useState<Target[]>([]);
-  const token = localStorage.getItem("access_token");
-  const config: AxiosConfig = {
-    method: "get",
-    maxBodyLength: Infinity,
-    url: `${import.meta.env.VITE_HOST_URL}/api/user/targets/`,
 
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
   const getData = (): void => {
-    axios(config)
+    const token = localStorage.getItem("access_token");
+    const url = '/api/user/targets/';
+
+    axiosInstance.get(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then((response: { data: APIResponse }) => {
         setItems(response.data.results as Target[]);
       })
@@ -195,6 +197,7 @@ export default function TargetList(): ReactElement {
         console.log(error);
       });
   };
+
   useEffect(() => getData(), []);
   const [open, setOpen] = useState<boolean>(false)
 
@@ -214,36 +217,31 @@ export default function TargetList(): ReactElement {
   const createTitle = `Tạo mục tiêu`;
   const createChildren = <TargetCreate setOrg={setOrg} setURL={setURL} />;
   const onClick = () => {
-    const token = localStorage.getItem("access_token")
-
+    const token = localStorage.getItem("access_token");
     const data = JSON.stringify({
       url: URL,
       org: Org
     });
 
-    const config = {
-      method: 'post',
-      maxBodyLength: Infinity,
-      url: `http://localhost:8000/api/user/targets/`,
+    const url = '/api/user/targets/';
+
+    axiosInstance.post(url, data, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
-      data: data
-    };
-
-    axios.request(config)
+    })
       .then((response) => {
-        setOpen(false)
-        getData()
+        setOpen(false);
+        getData();
         console.log(JSON.stringify(response.data));
       })
       .catch((error) => {
-        setOpen(false)
+        setOpen(false);
         console.log(error);
       });
-
   };
+
   const createAction = (
     <Button appearance="primary" icon={<FormNewRegular />} onClick={onClick}>
       Tạo mới

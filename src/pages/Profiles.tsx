@@ -12,7 +12,7 @@ import {
   Button,
   Body1Stronger,
 } from "@fluentui/react-components";
-
+import axiosInstance from '../axiosConfig';
 import {
   DeleteRegular,
   EditRegular,
@@ -26,9 +26,9 @@ import DialogComponent from "../components/DialogRegular";
 
 import type { TableColumnDefinition } from "@fluentui/react-components";
 
-import { APIResponse, AxiosConfig, ScanProfile } from "../type";
+import { APIResponse, ScanProfile } from "../type";
 import { useEffect, useState } from "react";
-import axios from "axios";
+
 import ProfileCreate from "./profile/ProfileCreate";
 import ProfileDetail from "./profile/ProfileDetail";
 import ProfileEdit from "./profile/ProfileEdit";
@@ -204,28 +204,33 @@ const columns: TableColumnDefinition<ScanProfile>[] = [
         />
       );
       const sendDelete = () => {
-        const token = localStorage.getItem("access_token")
+        const token = localStorage.getItem("access_token");
+
+
+        const url = `/api/user/scan_profiles/${item.id}`;
+
         const config = {
           method: 'delete',
           maxBodyLength: Infinity,
-          url: `http://localhost:8000/api/user/scan_profiles/${item.id}`,
+          url: url,
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
           },
         };
 
-        axios.request(config)
+        axiosInstance.request(config)
           .then((response) => {
-            setOpen(false)
-            window.location.reload()
+            setOpen(false);
+            window.location.reload();
             console.log(JSON.stringify(response.data));
           })
           .catch((error) => {
-            setOpen(false)
+            setOpen(false);
             console.log(error);
           });
-      }
+      };
+
       const deleteButton = <Button icon={<DeleteRegular />} onClick={() => setOpen2(true)}>Xóa</Button>;
       const deleteTitle = `Thực hiện xóa?`;
       const deleteChildren = <>Bạn có muốn xóa {item.name} không?</>;
@@ -256,18 +261,15 @@ const columns: TableColumnDefinition<ScanProfile>[] = [
 
 export default function ScanProfiles() {
   const [items, setItems] = useState<ScanProfile[]>([]);
-  const token = localStorage.getItem("access_token");
-  const config: AxiosConfig = {
-    method: "get",
-    maxBodyLength: Infinity,
-    url: `${import.meta.env.VITE_HOST_URL}/api/user/scan_profiles/`,
-
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
   const getData = (): void => {
-    axios(config)
+    const token = localStorage.getItem("access_token");
+    const url = '/api/user/scan_profiles/';
+
+    axiosInstance.get(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then((response: { data: APIResponse }) => {
         setItems(response.data.results as ScanProfile[]);
       })
@@ -275,6 +277,7 @@ export default function ScanProfiles() {
         console.log(error);
       });
   };
+
   useEffect(() => getData(), []);
   const [header, setHeader] = useState<string[]>([])
   const [authorFilter, setAuthorFilter] = useState<string[]>([])
@@ -306,33 +309,30 @@ export default function ScanProfiles() {
   );
   const createTitle = `Tạo Profile mới`;
   const handleCreateScanProfile = () => {
-    const token = localStorage.getItem("access_token")
-    const oridata: ScanProfile = { ...newProfile, configuration: { "-H": header, "-a": authorFilter, "-id": idFilter, "-tags": tagFilter } }
+    const token = localStorage.getItem("access_token");
+    const oridata: ScanProfile = { ...newProfile, configuration: { "-H": header, "-a": authorFilter, "-id": idFilter, "-tags": tagFilter } };
     const data = JSON.stringify(oridata);
-    console.log(data)
-    const config = {
-      method: 'post',
-      maxBodyLength: Infinity,
-      url: `http://localhost:8000/api/user/scan_profiles/`,
+    console.log(data);
+
+    const url = '/api/user/scan_profiles/';
+
+    axiosInstance.post(url, data, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
-      data: data
-    };
-
-    axios.request(config)
+    })
       .then((response) => {
-        setOpen(false)
-        getData()
+        setOpen(false);
+        getData(); // Assuming getData is a function to fetch updated data
         console.log(JSON.stringify(response.data));
       })
       .catch((error) => {
-        setOpen(false)
+        setOpen(false);
         console.log(error);
       });
+  };
 
-  }
   const createChildren = <ProfileCreate
     newProfile={newProfile}
     setNewProfile={setNewProfile}

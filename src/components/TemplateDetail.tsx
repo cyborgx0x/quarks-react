@@ -8,17 +8,10 @@ import {
     TableColumnDefinition,
     createTableColumn,
 } from "@fluentui/react-components";
-import { Template, TemplateResponse } from "../type";
-import axios from "axios";
+import { Template } from "../type";
+
 import { useEffect, useState } from "react";
-interface AxiosConfig {
-    method: string;
-    maxBodyLength: number;
-    url: string;
-    headers: {
-        Authorization: string;
-    };
-}
+import axiosInstance from "../axiosConfig";
 
 const columns: TableColumnDefinition<Template>[] = [
     createTableColumn<Template>({
@@ -73,25 +66,23 @@ const columns: TableColumnDefinition<Template>[] = [
 
 export const CompositeNavigation = () => {
     const [items, setItems] = useState<Template[]>([]);
-    const token = localStorage.getItem("access_token");
-    const config: AxiosConfig = {
-        method: "get",
-        maxBodyLength: Infinity,
-        url: `${import.meta.env.VITE_HOST_URL}/api/user/templates/`,
-
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    };
     const getData = (): void => {
-        axios(config)
-            .then((response: { data: TemplateResponse }) => {
-                setItems(response.data.results);
-            })
-            .catch((error: { error: Template }) => {
-                console.log(error);
-            });
-    }
+        const token = localStorage.getItem("access_token");
+        const url = '/api/user/templates/';
+      
+        axiosInstance.get(url, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+          .then((response) => {
+            setItems(response.data.results);
+          })
+          .catch((error: { error: Template }) => {
+            console.log(error);
+          });
+      };
+      
     useEffect(
         () => getData(), []
     )
