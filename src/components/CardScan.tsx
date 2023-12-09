@@ -57,14 +57,14 @@ const useStyles = makeStyles({
 
 
 export default function CardScan(
-    { target }: { target: number | undefined }
+    { target, profile }: { target: number | undefined, profile: number | undefined }
 ): React.ReactElement {
     const styles = useStyles();
     const handleScan = () => {
         const url = '/api/user/scans/';
 
         axiosInstance.post(url, {
-            profile: 1,
+            profile: profile,
             targets: [target],
         })
             .then((response) => {

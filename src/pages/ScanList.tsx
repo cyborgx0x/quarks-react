@@ -467,7 +467,7 @@ export default function ScanList(): ReactElement {
           alignContent="center"
           className={styles.customLineStyle}
         >
-          <CardScan target={targetList.pop()?.id} />
+          <CardScan target={targetList.sort((a, b) => parseFloat(a.created_at) - parseFloat(b.created_at))[0].id} profile={profileList.sort((a, b) => parseFloat(a.created_at) - parseFloat(b.created_at))[0].id} />
         </Divider>
       </div>
       <div
