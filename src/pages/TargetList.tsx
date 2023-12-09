@@ -141,7 +141,7 @@ const columns: TableColumnDefinition<Target>[] = [
       />;
       const sendEdit = () => {
 
-        const url = `/api/user/targets/${item.id}/`;
+        const endpoint = `/api/user/targets/${item.id}/`;
         const data = {
           url: url,
           org: org
@@ -149,7 +149,7 @@ const columns: TableColumnDefinition<Target>[] = [
         const config = {
           method: 'put',
           maxBodyLength: Infinity,
-          url: url,
+          url: endpoint,
           data: data
         };
         axiosInstance.request(config)

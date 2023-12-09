@@ -9,6 +9,7 @@ import {
 } from "@fluentui/react-components";
 import { MoreHorizontal20Regular, ScanObjectRegular } from "@fluentui/react-icons";
 import { Card, CardHeader } from "@fluentui/react-components";
+import axiosInstance from "../axiosConfig";
 
 
 const useStyles = makeStyles({
@@ -55,9 +56,26 @@ const useStyles = makeStyles({
 
 
 
-export default function CardScan(): React.ReactElement {
+export default function CardScan(
+    { target }: { target: number }
+): React.ReactElement {
     const styles = useStyles();
-    
+    const handleScan = () => {
+        const url = '/api/user/scans/';
+
+        axiosInstance.post(url, {
+            profile: 1,
+            targets: [target],
+        })
+            .then((response) => {
+                window.location.reload();
+                console.log(JSON.stringify(response.data));
+            })
+            .catch((error) => {
+
+                console.log(error);
+            });
+    }
     return (
         <div className={styles.main}>
             <section className={styles.section}>
@@ -79,7 +97,7 @@ export default function CardScan(): React.ReactElement {
                     <p className={styles.text}>
                         Quét với toàn bộ các CVE mới phát hiện năm 2023
                     </p>
-                    <Button icon={<ScanObjectRegular />} appearance="primary">Thực hiện quét</Button>
+                    <Button icon={<ScanObjectRegular />} appearance="primary" onClick={handleScan}>Thực hiện quét</Button>
                 </Card>
             </section>
 

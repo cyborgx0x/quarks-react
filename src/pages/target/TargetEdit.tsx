@@ -1,4 +1,4 @@
-import { ReactElement, useState } from "react";
+import { ReactElement } from "react";
 import { LinkRegular, OrganizationRegular } from "@fluentui/react-icons";
 
 import {
@@ -9,7 +9,7 @@ import {
   makeStyles,
   shorthands,
 } from "@fluentui/react-components";
-import { Target } from "../../type";
+
 
 const useStyles = makeStyles({
   container: {
