@@ -6,7 +6,7 @@ export default function VulnerabilitySeverityTable() {
         { level: 'High', score: '7.0-8.9', description: 'Lỗ hổng ở mức độ này khai thác khó hơn, tuy nhiên vẫn có thể dẫn đến leo thang đặc quyền hay đánh mất dữ liệu. Nên có kế hoạch giải quyết cụ thể và bản vá cho lỗ hổng này càng sớm càng tốt.' },
         { level: 'Critical', score: '9.0-10', description: 'Lỗ hổng ở mức độ này có thể khai thác trực tiếp và thường để lại hậu quả ở cấp hệ thống. Nên có kế hoạch giải quyết cụ thể và bản vá cho lỗ hổng này ngay lập tức.' }
     ];
-    const tableStyle = { width: "100%", border: " 1px solid black", borderCollapse: "collapse" }
+    const tableStyle = { width: "100%", border: " 1px solid black"}
     const rowStyle = { border: "1px solid black", padding: "8px" }
     return (
         <table style={tableStyle}>

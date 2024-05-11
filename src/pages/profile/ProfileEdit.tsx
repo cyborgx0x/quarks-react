@@ -60,28 +60,29 @@ export default function ProfileEdit({
   const updateHeader = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       e.preventDefault()
-      setHeader([...header, e.currentTarget.value])
+      setHeader([...(header || []), e.currentTarget.value])
+
       setTemp('')
     }
   }
   const updateTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       e.preventDefault()
-      setTagFilter([...tagFilter, e.currentTarget.value])
+      setTagFilter([...(tagFilter || []), e.currentTarget.value])
       setTempTag('')
     }
   }
   const updateAuthor = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       e.preventDefault()
-      setAuthorFilter([...authorFilter, e.currentTarget.value])
+      setAuthorFilter([...(authorFilter || []), e.currentTarget.value])
       setTempAuthor('')
     }
   }
   const updateID = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       e.preventDefault()
-      setIdFilter([...idFilter, e.currentTarget.value])
+      setIdFilter([...(idFilter || []), e.currentTarget.value])
       setTempID('')
     }
   }

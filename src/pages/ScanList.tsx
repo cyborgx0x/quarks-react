@@ -380,7 +380,7 @@ export default function ScanList(): ReactElement {
           aria-labelledby={selectTarget}
           multiselect={true}
           placeholder="Chọn một hoặc nhiều mục tiêu"
-          onOptionSelect={(e, data) => setTarget(data.selectedOptions)}
+          onOptionSelect={(_e, data) => setTarget(data.selectedOptions)}
         >
           {targetList.map((option) => (
             <Option key={option.id} value={option.id.toString()}>

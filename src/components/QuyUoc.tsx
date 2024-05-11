@@ -7,7 +7,7 @@ export default function QuyUoc() {
         { id: '', weakness: '', severity: 'Low', recommendation: 'Đề xuất giải pháp khắc phục lỗ hổng' },
         { id: '', weakness: '', severity: 'Info', recommendation: 'Đề xuất giải pháp khắc phục lỗ hổng' }
     ];
-    const tableStyle = { width: "100%", border: " 1px solid black", borderCollapse: "collapse" }
+    const tableStyle = { width: "100%", border: " 1px solid black" }
     const rowStyle = { border: "1px solid black", padding: "8px" }
     return (
         <table style={tableStyle}>

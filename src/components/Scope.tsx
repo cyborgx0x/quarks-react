@@ -2,7 +2,7 @@
 import { Target } from '../type';
 
 export default function ScopeTable({ targets }: { targets: Target[] }) {
-  const tableStyle = { width: "100%", border: " 1px solid black", borderCollapse: "collapse" }
+  const tableStyle = { width: "100%", border: " 1px solid black", }
   const rowStyle = { border: "1px solid black", padding: "8px" }
   return (
     <table style={tableStyle}>
